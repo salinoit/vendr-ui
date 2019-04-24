@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- viewport meta -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Vendr Consumidor</title>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../../assets/vendor/fontawesome-free/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../../../assets/css/lnr-icon.css">
+    <link rel="stylesheet" href="../../../assets/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <!-- endinject -->
+    <!-- Favicon -->
+    <link rel="icon" type="../../../assets/image/png" sizes="16x16" href="../../../assets/images/favicon.ico">
+</head>
+
+<body class="recover-pass-page">
+    <!--================================
+        START REGISTER AREA
+    =================================-->
+    <section class="pass_recover_area section--padding2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">                    
+                    <form (ngSubmit)="onSubmit()" id="forgotForm" class="user" [formGroup]="forgotForm">                       
+                        <div class="cardify signup_form" style="padding-top: 30px;">
+                                <div class='col-md-12'>
+                                        <alert></alert>
+                                    </div>
+                            <div class="login--header" style="padding-bottom: 30px;">
+                                <div class="logo">
+                                    <a class="w-100" routerLink="./">
+                                        <img src="../../../assets/images/logo.png" alt="logo image" class="img-fluid" style="width: 150px;">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- end .login_header -->
+
+                            <div class="login--form">
+                              <p>Digite abaixo seu e-mail de cadastro e uma nova senha lhe será enviada. Você poderá alterá-la posteriormente em suas configurações.</p>
+                              
+                              <div class="form-group">
+                                <input type="text" class="text_field" placeholder="E-mail"
+                                id="email" formControlName="email"                                     
+                                [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                    <control-messages [control]="forgotForm.controls.email"></control-messages>
+                               </div>
+                            </div>
+
+                              <div class="form-group text-center">
+                                <button [disabled]="loading" class="btn btn--md btn--round">ENVIAR</button>
+                              </div>
+
+                              <div class="login_assist">
+                                  <p>
+                                      <a routerLink="./login">Voltar</a>
+                                  </p>
+                              </div>
+                          </div>
+
+                           
+                            <!-- end .login--form -->
+                        </div>
+                        <!-- end .cardify -->
+                    </form>
+                </div>
+                <!-- end .col-md-6 -->
+            </div>
+            <!-- end .row -->
+        </div>
+        <!-- end .container -->
+    </section>
+    <!--================================
+        END REGISTER AREA
+    =================================-->
+
+<app-footer></app-footer>
+   
+</body>
+
+</html>

@@ -1,0 +1,65 @@
+<app-breadcumb title="Perfil" link="/perfil"></app-breadcumb>
+<!--================================
+        START DASHBOARD AREA
+    =================================-->
+    <section class="dashboard-area">
+        <div class="dashboard_contents">
+            <div class="container">
+                <form class="setting_form" (ngSubmit)="onSubmit()" id="profileForm"  [formGroup]="profileForm">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="information_module">
+                                <a class="toggle_title">
+                                    <h4>Editar perfil</h4>
+                                </a>
+
+                                <div class="information__set toggle_module">
+                                    <div class="information_wrapper form--fields">
+                                        <div class="form-group">
+                                            <label for="emailad">{{currentUser.email}}</label>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <input type="text" class="text_field" placeholder="Nome"
+                                            id="nome" formControlName="nome"                                     
+                                            [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
+                                            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                                <control-messages [control]="profileForm.controls.nome"></control-messages>
+                                            </div>                                           
+                                        </div>
+        
+                                        <div class="form-group">
+                                            <input type="password" class="text_field" placeholder="Senha"
+                                            id="password" formControlName="password"                                     
+                                            [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">                                        
+                                                <control-messages [control]="profileForm.controls.password"></control-messages>
+                                           </div>                                           
+                                        </div>
+        
+
+                                    </div>
+                                    <!-- end /.information_wrapper -->
+                                </div>
+                                <!-- end /.information__set -->
+                            </div>
+                            <!-- end /.information_module -->
+
+                            <div class="dashboard_setting_btn">
+                                <button [disabled]="loading" class="btn btn--md btn--round">SALVAR</button>
+                            </div>
+                        </div>
+                        <!-- end /.col-md-12 -->
+                    </div>
+                    <!-- end /.row -->
+                </form>
+                <!-- end /form -->
+            </div>
+            <!-- end /.container -->
+        </div>
+        <!-- end /.dashboard_menu_area -->
+    </section>
+    <!--================================
+        END DASHBOARD AREA
+    =================================-->
+

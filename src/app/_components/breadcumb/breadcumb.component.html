@@ -1,0 +1,31 @@
+
+    <!--================================
+        START BREADCRUMB AREA
+    =================================-->
+    <section class="breadcrumb-area pt-4 pb-4 pt-md-5 pb-md-5">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="breadcrumb">
+                      <ul>
+                          <li>
+                              <a routerLink='/dashboard'>Home</a>
+                          </li>
+                          <li>
+                              <a class="d-block d-sm-none" >{{title}}}</a>
+                          </li>
+                      </ul>
+                  </div>
+
+                  <h1 *ngIf="getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" (click)="navigate(getLink())">{{title}}</h1>
+                  <h1 *ngIf="!getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" >{{title}}</h1>
+              </div>
+              <!-- end /.col-md-12 -->
+          </div>
+          <!-- end /.row -->
+      </div>
+      <!-- end /.container -->
+  </section>
+  <!--================================
+      END BREADCRUMB AREA
+  =================================-->

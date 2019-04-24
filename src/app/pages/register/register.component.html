@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- viewport meta -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Vendr Consumidor</title>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../../assets/vendor/fontawesome-free/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../../../assets/css/lnr-icon.css">
+    <link rel="stylesheet" href="../../../assets/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <!-- endinject -->
+    <!-- Favicon -->
+    <link rel="icon" type="./assets/image/png" sizes="16x16" href="./assets/images/favicon.ico">
+</head>
+
+<body class="signup-page">
+    <!--================================
+        START REGISTER AREA
+    =================================-->
+    <section class="login_area section--padding2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    
+                    <form (ngSubmit)="onSubmit()" id="registerForm" class="user" [formGroup]="registerForm">
+                       
+                        <div class="cardify signup_form" style="padding-top: 30px;">
+                                <div class='col-md-12'>
+                                        <alert></alert>
+                                    </div>
+                            <div class="login--header" style="padding-bottom: 30px;">
+                                <div class="logo">
+                                    <a class="w-100" routerLink="./">
+                                        <img src="./assets/images/logo.png" alt="logo image" class="img-fluid" style="width: 150px;">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- end .login_header -->
+
+                            <div class="login--form">                                                               
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="Nome"
+                                    id="nome" formControlName="nome"                                     
+                                    [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
+                                    <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="registerForm.controls.nome"></control-messages>
+                                   </div>
+                                   
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="email"
+                                    id="email" formControlName="email"                                     
+                                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="registerForm.controls.email"></control-messages>
+                                   </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="celular"
+                                    id="celular" formControlName="celular"    mask="(00)00000-0000"                                  
+                                    [ngClass]="{ 'is-invalid': submitted && f.celular.errors }">
+                                    <div *ngIf="submitted && f.celular.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="registerForm.controls.celular"></control-messages>
+                                   </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="Senha"
+                                    id="password" formControlName="password"                                     
+                                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="registerForm.controls.password"></control-messages>
+                                   </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="Confirme a Senha"
+                                    id="password2" formControlName="password2"                                      
+                                    [ngClass]="{ 'is-invalid': submitted && f.password2.errors }">
+                                    <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="registerForm.controls.password2"></control-messages>
+                                   </div>
+
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button [disabled]="loading" class="btn btn--md btn--round">CADASTRAR</button>
+                                </div>
+
+                                <div class="login_assist">
+                                    <p>Já possui cadastro?
+                                        <a routerLink="/login">Faça Login.</a>
+                                    </p>
+                                </div>
+                                                                
+                            </div>
+                            <!-- end .login--form -->
+                        </div>
+                        <!-- end .cardify -->
+                    </form>
+                </div>
+                <!-- end .col-md-6 -->
+            </div>
+            <!-- end .row -->
+        </div>
+        <!-- end .container -->
+    </section>
+    <!--================================
+        END REGISTER AREA
+    =================================-->
+
+<app-footer></app-footer>
+   
+</body>
+
+</html>

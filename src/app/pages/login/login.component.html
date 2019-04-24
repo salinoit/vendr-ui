@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <!-- viewport meta -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Vendr Consumidor</title>
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../../../assets/vendor/fontawesome-free/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../../../assets/css/lnr-icon.css">
+    <link rel="stylesheet" href="../../../assets/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <!-- endinject -->
+    <!-- Favicon -->
+    <link rel="icon" type="../../../assets/image/png" sizes="16x16" href="../../../assets/images/favicon.ico">
+</head>
+
+<body class="login-page">
+    <!--================================
+        START LOGIN AREA
+    =================================-->
+    <section class="login_area section--padding2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3">
+                    
+                    <form (ngSubmit)="onSubmit()" id="loginForm" class="user" [formGroup]="loginForm">
+                       
+                        <div class="cardify login" style="padding-top: 30px;">
+                                <div class='col-md-12'>
+                                        <alert></alert>
+                                    </div>
+                            <div class="login--header" style="padding-bottom: 30px;">
+                                <div class="logo">
+                                    <a class="w-100" routerLink="./">
+                                        <img src="../../../assets/images/logo.png" alt="logo image" class="img-fluid" style="width: 150px;">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- end .login_header -->
+
+                            <div class="login--form">
+                                <div class="form-group">
+                                    <input type="email" class="te/xt_field" placeholder="E-mail" id="email" formControlName="email" aria-describedby="emailHelp" placeholder="E-mail" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="loginForm.controls.email"></control-messages>
+                                   </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <input type="password" class="text_field" placeholder="Senha" formControlName="password" id="exampleInputPassword" placeholder="Senha" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                            <control-messages [control]="loginForm.controls.password"></control-messages>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="custom_checkbox">
+                                        <input type="checkbox" id="ch2">
+                                        <label for="ch2">
+                                            <span class="shadow_checkbox"></span>
+                                            <span class="label_text">Lembrar</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <!--<button class="btn btn--md btn--round" type="submit">ENTRAR</button>-->
+                                    <button [disabled]="loading" class="btn btn--md btn--round">ENTRAR</button>
+                                    <!-- <a [disabled]="loading" class="btn btn--md btn--round" >ENTRAR</a> -->
+                                </div>
+
+                                <div class="login_assist">
+                                    <p class="recover"><a routerLink="/forgot">Esqueceu sua senha?</a></p>
+                                    <p class="signup"><a routerLink="/register">Ainda não tem cadastro?</a></p>
+                                </div>
+                            </div>
+                            <!-- end .login--form -->
+                        </div>
+                        <!-- end .cardify -->
+                    </form>
+                </div>
+                <!-- end .col-md-6 -->
+            </div>
+            <!-- end .row -->
+        </div>
+        <!-- end .container -->
+    </section>
+    <!--================================
+        END LOGIN AREA
+    =================================-->
+
+<app-footer></app-footer>
+   
+</body>
+
+</html>

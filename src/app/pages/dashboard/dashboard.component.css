@@ -1,0 +1,9 @@
+/* .image-wrapper:after, .loading {
+    content: ' ';
+    background: transparent url('http://thinkfuture.com/wp-content/uploads/2013/10/loading_spinner.gif')  center no-repeat ;
+    background-size : auto 100%;
+    width: 106px;
+    height: 106px;
+    float: left;
+    display: block;
+  } */

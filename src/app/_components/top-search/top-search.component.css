@@ -1,0 +1,32 @@
+.search-result
+{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    position: absolute;
+    z-index: 100;
+    left: 0px;
+    right: 0;
+    top: 38px;
+    width: 100%;
+    /* min-height: 154px; */
+    list-style-type: none;
+    /* z-index: 9999999999; */
+    overflow-y: auto;
+    /* max-height: 210px; */
+    padding-left: 0;
+    background: #fff;
+}
+
+.search-result li 
+{
+    padding: 10px}
+.search-result li a
+{
+    color:gray;
+}
+
+  
+  /*
+  Copyright Google LLC. All Rights Reserved.
+  Use of this source code is governed by an MIT-style license that
+  can be found in the LICENSE file at http://angular.io/license
+  */

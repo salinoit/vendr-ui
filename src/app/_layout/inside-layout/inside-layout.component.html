@@ -1,0 +1,189 @@
+
+
+
+
+
+<!--================================
+        START MENU AREA
+    =================================-->
+    <!-- start menu-area -->
+    <div class="menu-area">
+      <!-- start .top-menu-area -->
+      <div class="top-menu-area">
+          <!-- start .container -->
+          <div class="container">
+              <!-- start .row -->
+              <div class="row">
+                  <!-- start .col-md-3 -->
+                  <div class="col-lg-3 col-md-3 col-7 v_middle">
+                      <div class="logo">
+                          <a routerLink="./dashboard">
+                              <img src="./assets/images/logo.png" alt="Logo imagem" class="img-fluid" style="max-width: 150px;">
+                          </a>
+                      </div>
+                  </div>
+                  <!-- end /.col-md-3 -->
+
+                  <!-- start .col-md-5 -->
+                  <div class="col-lg-8 offset-lg-1 col-md-9 col-5 v_middle p-0">
+                      <!-- start .author-area -->
+                      <div class="author-area d-block float-left float-md-right">
+                          <div class="author__notification_area mr-md-4">
+                              <div class="d-md-none" style="position: relative; top: 19px;">
+                                  <a class="btn-carrinho" routerLink="/carrinho">
+                                      <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span> 
+                                      <span class="d-none d-md-inline-block">{{currentCart.total | currencyformat:'BRL':true }}</span>
+                                  </a>
+                                  <span class="notification_count purch">2</span>
+                              </div>
+                            
+                              <ul class="d-none d-md-inline-block">
+                                  <li class="has_dropdown">
+                                      <div class="icon_wrap">
+                                          <span style="background: rgba(6, 116, 236, 0.1);
+                                            color: #16a085;
+                                            padding: 10px 15px;
+                                            margin-bottom: 0;
+                                            -webkit-border-radius: 200px;
+                                            border-radius: 200px;
+                                            margin-top: 10px;
+                                            font-weight: 500;">
+                                        <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span> 
+                                              <span>{{getTotalCart()}}</span>
+                                          </span>
+                                          <span *ngIf="currentCart.items" class="notification_count purch">{{currentCart.items.length}}</span>
+                                      </div>
+
+                                      <div class="dropdown dropdown--cart d-none d-md-block" *ngIf="currentCart.items.length>0">
+                                          <div class="cart_area">
+                                              <div class="cart_product" *ngFor="let item of currentCart.items">
+                                                  
+                                                  <div class="product__info">
+                                                      <div class="thumbn">
+                                                          <img src="./assets/images/{{item.avatar}}" alt="cart product thumbnail">
+                                                      </div>
+
+                                                      <div class="info">
+                                                          <a class="title" routerLink="/produto/{{item.id}}" >{{item.title}}</a>
+                                                      </div>
+                                                  </div>                                                  
+                                                  <div class="product__action">
+                                                      <a href="javascript::return(0)" (click)="removeItemCart(item.productId)">
+                                                          <span class="lnr lnr-trash"></span>
+                                                      </a>
+                                                      <p>{{ item.vr | currencyformat }}</p>
+                                                  </div>
+                                              </div>                                             
+                                              <div class="total">
+                                                  <p class="m-0">
+                                                      <span>Total :</span>{{currentCart.total | currencyformat:'BRL':true }}</p>
+                                              </div>
+                                              
+                                              <div class="cart_action">
+                                                  <a class="go_cart" routerLink="/carrinho">Carrinho</a>
+                                                  <a class="go_checkout" routerLink="/checkout">Checkout</a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                          <!--start .author__notification_area -->
+
+                          <!--start .author-author__info-->
+                          <div class="author-author__info inline has_dropdown d-none d-md-block">
+                              <div class="author__avatar" style="cursor: pointer;">
+                                  <img src="./assets/images/usr_avatar.png" alt="user avatar">
+                              </div>
+                              <div class="autor__info ml-2" style="cursor: pointer;">
+                                  <p class="name">
+                                    {{currentUser.nome}}
+                                  </p>
+                              </div>
+
+                              <div class="dropdown dropdown--author">
+                                  <ul>
+                                      <li>
+
+                                          <a routerLink="/dashboard">
+                                              <span class="lnr lnr-home"></span>Dashboard</a>
+                                      </li>
+                                      <li>
+                                          <a routerLink="/perfil">
+                                              <span class="lnr lnr-user"></span>Meu Perfil</a>
+                                      </li>
+                                      <li>
+                                          <a routerLink="/pedidos">
+                                              <span class="lnr lnr-chart-bars"></span>Meus Pedidos</a>
+                                      </li>
+                                      <li>
+                                          <a routerLink="/login" (click)="logout()">
+                                              <span class="lnr lnr-exit"></span>Sair</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                          <!--end /.author-author__info-->
+                      </div>
+                      <!-- end .author-area -->
+
+                      <!-- author area restructured for mobile -->
+                      <div class="mobile_content ">
+                          <span class="lnr lnr-user menu_icon"></span>
+
+                          <!-- offcanvas menu -->
+                          <div class="offcanvas-menu closed">
+                              <span class="lnr lnr-cross close_menu"></span>
+                              <div class="author-author__info">
+                                  <div class="author__avatar v_middle">
+                                      <img src="./assets/images/usr_avatar.png" alt="user avatar">
+                                  </div>
+                                  <div class="autor__info v_middle">
+                                      <p class="name">
+                                          José Brasileiro
+                                      </p>
+                                  </div>
+                              </div>
+                              <!--end /.author-author__info-->
+
+                              <div class="dropdown dropdown--author">
+                                  <ul>
+                                      <li>
+                                          <a routeLink="/dashboard">
+                                              <span class="lnr lnr-home"></span>Dashboard</a>
+                                      </li>
+                                      <li>
+                                          <a routeLink="/perfil">
+                                              <span class="lnr lnr-user"></span>Meu Perfil</a>
+                                      </li>
+                                      <li>
+                                          <a routeLink="/pedidos">
+                                              <span class="lnr lnr-chart-bars"></span>Meus Pedidos</a>
+                                      </li>
+                                      <li>
+                                          <a style="cursor:pointer">
+                                              <span class="lnr lnr-exit"></span>Sair</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </div>
+                          <div class="offcanvas-overlay"></div>
+                      </div>
+                      <!-- end /.mobile_content -->
+                  </div>
+                  <!-- end /.col-md-5 -->
+              </div>
+              <!-- end /.row -->
+          </div>
+          <!-- end /.container -->
+      </div>
+      <!-- end  -->
+  </div>
+  <!-- end /.menu-area -->
+  <!--================================
+      END MENU AREA
+  =================================-->
+
+<router-outlet></router-outlet>
+  
+  <app-footer></app-footer>

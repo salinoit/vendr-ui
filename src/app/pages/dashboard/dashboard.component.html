@@ -1,0 +1,213 @@
+
+<!-- MODAL SELECIONA VENDEDOR -->
+<div class="modal fade" id="ModalVendedor" tabindex="-1" role="dialog" aria-labelledby="ModalVendedorTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!--<div class="modal-header">
+          <h5 class="modal-title m-0" id="ModalVendedorTitle">Selecione o Vendedor</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>-->
+        <div class="modal-body">
+            <p>Selecione o vendedor para exibir seus produtos:</p>
+            <form>
+                <div class="form-group">
+                  <select class="form-control" name="_vendedorId"  (change)="_sellerChange($event.target.value)" aria-label="Close" >
+                    <option *ngFor="let vendedor of currentUser.vendedores" [value]='vendedor.id' [selected]="vendedor.id==_vendedor.id" >
+                        {{vendedor.iddle}}
+                    </option>
+                  </select>
+                </div>
+            </form>
+        </div>
+        <!--<div class="modal-footer">
+          <a class="btn btn-custom">OK</a>
+        </div>-->
+      </div>
+    </div>
+  </div>
+
+  
+<!-- FIM DO LAYOUT DO MODAL -->
+
+
+
+
+
+
+<!--================================
+        START BREADCRUMB AREA
+    =================================-->
+    <section class="breadcrumb-area pt-4 pb-4 pt-md-5 pb-md-5">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <h1 class="page-title">
+                      <a class="text-white" routerLink="/vendedor">
+                          <img class="pull-left mr-4 avatar-vendedor" src="./assets/images/{{_vendedor.avatar}}" alt="Imagem Vendedor" width="100" > Nome Vendedor<br>
+                          <small *ngIf="_products.length>1" >{{_products.length + " itens"}} </small>
+                          <small *ngIf="_products.length==1" >1 Item </small>
+                          <small *ngIf="_products.length==0" >Nenhum item</small>
+                      </a>
+                  </h1>
+              </div>
+              <!-- end /.col-md-12 -->
+          </div>
+          <!-- end /.row -->
+      </div>
+      <!-- end /.container -->
+  </section>
+  <!--================================
+      END BREADCRUMB AREA
+  =================================-->
+
+
+  <!--================================
+      START FILTER AREA
+  =================================-->
+  <div class="filter-area">
+  <div class="filter-area-bg">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="row filter-bar filter-bar3 m-0 text-xs-center text-md-left">
+                      <div class="col-xs-12 col-md-4 col-lg-3 filter__option filter--text" *ngIf="currentUser.vendedores.length>1">
+                          <a class="btn btn-default btn--round text-white pr-3" href="#" data-toggle="modal" data-target="#ModalVendedor"><span class="lnr lnr-users pl-3 pr-2"></span> Selecionar Vendedor</a>
+                      </div>
+                      
+                      <div class="col-xs-12 col-md-8 col-lg-9 filter__option filter--text">
+                          <!-- start mainmenu__search -->
+                          <div class="mainmenu__search p-0">
+                              <form action="#">
+                                  <div class="searc-wrap">
+                                      <input type="text" placeholder="Código ou nome do produto"  (input)="_searchInput($event.target.value)" >
+                                      <button type="submit" class="search-wrap__btn">
+                                          <span class="lnr lnr-magnifier"></span>
+                                      </button>
+                                  </div>
+                              </form>
+                          </div>
+                          <!-- start mainmenu__search -->
+                      </div>
+                  </div>
+                  
+                  <div class="row filter-bar filter-bar3 m-0">
+                      <div class="col-xs-12 w-100">
+                          <div class="filter__option filter--select">
+                              <div class="select-wrap">
+                                <select [(ngModel)]="filterBy" (ngModelChange)="_filterByChange($event)">
+                                    <option *ngFor="let c of _filterBy" [value]="c.id">{{c.name}}</option>
+                                </select>
+                                  <span class="lnr lnr-chevron-down"></span>
+                              </div>
+                          </div>
+                          <div class="filter__option filter--select">
+                              <div class="select-wrap">
+                                <select [(ngModel)]="itensOrder" (ngModelChange)="_itensOrderChange($event)">
+                                    <option *ngFor="let c of _itensOrder" [value]="c.id">{{c.name}}</option>
+                                </select>
+                                  <span class="lnr lnr-chevron-down"></span>
+                              </div>
+                          </div>
+                          <div class="filter__option filter--select">
+                              <div class="select-wrap">
+                                <select [(ngModel)]="itensPerPage" (ngModelChange)="_itensPerPageChange($event)">
+                                    <option *ngFor="let c of _itensPerPage" [value]="c.id">{{c.name}}</option>
+                                </select>
+                                  <span class="lnr lnr-chevron-down"></span>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- end /.pull-right -->
+                  </div>
+                  <!-- end filter-bar -->
+              </div>
+              <!-- end /.col-md-12 -->
+          </div>
+          <!-- end filter-bar -->
+      </div>
+  </div>
+  </div>
+  <!--================================
+      END FILTER AREA
+  =================================-->
+
+
+  <!--================================
+      START PRODUCTS AREA
+  =================================-->
+  <section class="products">
+      <!-- start container -->
+      <div class="container">
+
+          <!-- start .row -->
+          <div class="row pl-3">
+              <!-- start .col-md-3 -->
+              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3" *ngFor="let produto of pagedItems" >
+                  <!-- start .single-product -->
+                  <div class="product product--card mb-4 "  >
+
+                      <div class="product__thumbnail">
+                          <img src="./assets/images/{{produto.avatar}}" alt="Product Image" width="100%" >
+                          <div class="prod_btn">
+                              <a routerLink="/produto/{{produto.id}}" class="transparent btn--sm btn--round">Visualizar</a>
+                          </div>
+                          <!-- end /.prod_btn -->
+                      </div>
+                      <!-- end /.product__thumbnail -->
+
+                      <div class="product-desc">
+                          <a routerLink="/produto/{{produto.id}}" class="product_title">
+                              <h4>{{produto.title}}</h4>
+                          </a>
+                      </div>
+                      <!-- end /.product-desc -->
+
+                      <div class="product-purchase m-0 p-3">
+                          <div class="price_love d-block d-lg-inline-block">
+                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">{{produto.vr | currencyformat:'BRL':true}}</span>
+                              <p>
+                          </div>
+                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
+                      </div>
+                      <!-- end /.product-purchase -->
+                  </div>
+                  <!-- end /.single-product -->
+              </div>
+              <!-- end /.col-md-3 -->
+                          
+          </div>
+          <!-- end /.row -->
+
+
+
+          
+          <div class="row" *ngIf="pager.pages && pager.pages.length">
+              <div class="col-md-12">
+                  <div class="pagination-area">
+                      <nav class="navigation pagination" role="navigation">
+                          <div class="nav-links">
+                              <a class="prev page-numbers" href="javascript:void(0);" [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)">
+                                  <span class="lnr lnr-arrow-left"></span>
+                              </a>
+
+
+                              <a (click)="setPage(page)" href="javascript:void(0);" class="page-numbers" *ngFor="let page of pager.pages" [ngClass]="{current:pager.currentPage === page}">{{page}}</a>
+                              
+
+                              <a class="next page-numbers" href="javascript:void(0);" [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)" >
+                                  <span class="lnr lnr-arrow-right"></span>
+                              </a>
+                          </div>
+                      </nav>
+                  </div>
+              </div>
+          </div>
+          <!-- end /.row -->
+      </div>
+      <!-- end /.container -->
+  </section>
+  <!--================================
+      END PRODUCTS AREA
+  =================================-->

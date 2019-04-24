@@ -1,0 +1,279 @@
+    <!--================================
+        START DASHBOARD AREA
+    =================================-->
+    <section class="dashboard-area">
+      <div class="dashboard_contents">
+          <div class="container">
+              <form  class="checkout_form" (ngSubmit)="onSubmit()" id="checkoutForm"  [formGroup]="checkoutForm">
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="information_module">
+                              <div class="toggle_title">
+                                  <h4>Informações de Pagamento</h4>
+                              </div>
+
+                              <div class="information__set">
+                                  <div class="information_wrapper form--fields">
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                            <div class="form-group">
+                                              <input type="text" class="text_field" placeholder="Nome"
+                                              id="nome" formControlName="nome"                                     
+                                              [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
+                                              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                                  <control-messages [control]="checkoutForm.controls.nome"></control-messages>
+                                             </div>
+                                          </div>  
+                                                                                  
+                                        </div>
+
+                                          <div class="col-md-6">
+                                            <div class="form-group">
+                                              <input type="text" class="text_field" placeholder="Sobrenome"
+                                                  id="sobrenome" formControlName="sobrenome"                                     
+                                                  [ngClass]="{ 'is-invalid': submitted && f.sobrenome.errors }">
+                                                  <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">                                        
+                                                      <control-messages [control]="checkoutForm.controls.sobrenome"></control-messages>
+                                                 </div>
+                                              </div> 
+                                          </div>
+                                      </div>
+                                      <!-- end /.row -->
+
+                                      <div class="form-group">
+                                        <input type="text" class="text_field" placeholder="E-mail"
+                                        id="email" formControlName="email"                                     
+                                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                            <control-messages [control]="checkoutForm.controls.email"></control-messages>
+                                       </div>
+                                    </div> 
+
+                                      <div class="form-group">
+                                        <input type="text" class="text_field" placeholder="Telefone"
+                                        id="telefone" formControlName="telefone" mask="(00)00000-0000"                                    
+                                        [ngClass]="{ 'is-invalid': submitted && f.telefone.errors }">
+                                        <div *ngIf="submitted && f.telefone.errors" class="invalid-feedback">                                        
+                                            <control-messages [control]="checkoutForm.controls.telefone"></control-messages>
+                                       </div>
+                                    </div> 
+
+                                    <div class="form-group">
+                                      <input type="text" class="text_field" placeholder="CEP"
+                                      id="cep" formControlName="cep" mask="00000-000" (change)="buscaCep($event.target.value)"                                  
+                                      [ngClass]="{ 'is-invalid': submitted && f.cep.errors }">
+                                      <div *ngIf="submitted && f.cep.errors" class="invalid-feedback">                                        
+                                          <control-messages [control]="checkoutForm.controls.cep"></control-messages>
+                                     </div>
+                                  </div> 
+
+                                      <div class="form-group">
+                                          <!--<label for="endereco">Endereço</label>-->
+                                          <div class="form-group">
+                                            <input type="text" class="text_field" placeholder="Endereço"
+                                            id="endereco" formControlName="endereco"                                     
+                                            [ngClass]="{ 'is-invalid': submitted && f.endereco.errors }">
+                                            <div *ngIf="submitted && f.endereco.errors" class="invalid-feedback">                                        
+                                                <control-messages [control]="checkoutForm.controls.endereco"></control-messages>
+                                           </div>
+                                        </div>  
+
+                                      </div>
+
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <!--<label for="estado">Estado
+                                                      <sup>*</sup>
+                                                  </label>-->
+                                                  <div class="select-wrap select-wrap2">
+                                                      <select name="estado" id="estado" class="text_field">
+                                                          <option value="">Estado *</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                      </select>
+                                                      <span class="lnr lnr-chevron-down"></span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <!--<label for="estado">Cidade
+                                                      <sup>*</sup>
+                                                  </label>-->
+                                                  <div class="select-wrap select-wrap2">
+                                                      <select name="estado" id="estado" class="text_field">
+                                                          <option value="">Cidade *</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                          <option value="">xxxxx</option>
+                                                      </select>
+                                                      <span class="lnr lnr-chevron-down"></span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- end /.information__set -->
+                          </div>
+                          <!-- end /.information_module -->
+                      </div>
+                      <!-- end /.col-md-6 -->
+
+                      <div class="col-lg-6">
+                          <!--<div class="information_module order_summary">
+                              <div class="toggle_title">
+                                  <h4>Resumo do Pedido</h4>
+                              </div>
+
+                              <ul>
+                                  <li class="item">
+                                      <a href="produto.html" target="_blank">Nome Exemplo Produto 1</a>
+                                      <span>R$1200,00</span>
+                                  </li>
+                                  <li class="item">
+                                      <a href="produto.html" target="_blank">Nome Exemplo Produto 2</a>
+                                      <span>R$500,00</span>
+                                  </li>
+                                  <li>
+                                      <p>Taxas/Frete:</p>
+                                      <span>R$10,00</span>
+                                  </li>
+                                  <li class="total_ammount">
+                                      <p>Total</p>
+                                      <span>R$1800,00</span>
+                                  </li>
+                              </ul>
+                          </div>-->
+                          <!-- end /.information_module-->
+
+                          <div class="information_module payment_options mb-0">
+                              <div class="toggle_title">
+                                  <h4>Método de Pagamento</h4>
+                              </div>
+
+                              <ul>
+                                  <li>
+                                      <div class="custom-radio">
+                                          <input type="radio" id="opt1" class="" value="boleto"  formControlName="formapagto">
+                                          <label for="opt1">
+                                              <span class="circle"></span>Boleto</label>
+                                      </div>
+                                      <img src="./assets/images/boleto.png" alt="Boleto" style="height: 32px;">
+                                  </li>
+                                
+                                  <li>
+                                      <div class="custom-radio">
+                                          <input type="radio" id="opt2" class="" value="credito"  checked formControlName="formapagto">
+                                          <label for="opt2">
+                                              <span class="circle"></span>Cartão de Crédito</label>
+                                      </div>
+                                      <img src="./assets/images/cards.png" alt="Bandeiras Cartões">
+                                  </li>
+                              </ul>
+
+                              <div class="payment_info modules__content">
+                                <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="Número do Cartão"
+                                    id="cartao" formControlName="cartao"                                   
+                                    [ngClass]="{ 'is-invalid': submitted && f.cartao.errors }">
+                                    <div *ngIf="submitted && f.cartao.errors" class="invalid-feedback">                                        
+                                        <control-messages [control]="checkoutForm.controls.cartao"></control-messages>
+                                   </div>
+                                </div> 
+                                  <!-- lebel for date selection -->
+                                  <label for="name">Data de Validade</label>
+                                  <div class="row">
+                                      <div class="col-md-6 col-sm-6">
+                                          <div class="form-group">
+                                              <div class="select-wrap select-wrap2">
+                                                  <select name="months" id="name">
+                                                      <option value="">Mês</option>
+                                                      <option value="jan">Janeiro</option>
+                                                      <option value="feb">Fevereiro</option>
+                                                      <option value="mar">Março</option>
+                                                      <option value="apr">Abril</option>
+                                                      <option value="may">Maio</option>
+                                                      <option value="jun">Junho</option>
+                                                      <option value="jul">Julho</option>
+                                                      <option value="aug">Agosto</option>
+                                                      <option value="sep">Setembro</option>
+                                                      <option value="oct">Outubro</option>
+                                                      <option value="nov">Novembro</option>
+                                                      <option value="dec">Dezembro</option>
+                                                  </select>
+                                                  <span class="lnr lnr-chevron-down"></span>
+                                              </div>
+                                              <!-- end /.select-wrap -->
+                                          </div>
+                                          <!-- end /.form-group -->
+                                      </div>
+                                      <!-- end /.col-md-6-->
+
+                                      <div class="col-md-6 col-sm-6">
+                                          <div class="form-group">
+                                              <div class="select-wrap select-wrap2">
+                                                  <select name="years" id="years">
+                                                      <option value="">Ano</option>
+                                                      <option value="28">2030</option>
+                                                      <option value="27">2029</option>
+                                                      <option value="28">2028</option>
+                                                      <option value="27">2027</option>
+                                                      <option value="26">2026</option>
+                                                      <option value="25">2025</option>
+                                                      <option value="24">2024</option>
+                                                      <option value="23">2023</option>
+                                                      <option value="22">2022</option>
+                                                      <option value="21">2021</option>
+                                                      <option value="20">2020</option>
+                                                      <option value="19">2019</option>
+                                                  </select>
+                                                  <span class="lnr lnr-chevron-down"></span>
+                                              </div>
+                                              <!-- end /.select-wrap -->
+                                          </div>
+                                          <!-- end /.form-group -->
+                                      </div>
+                                      <!-- end /.col-md-6-->
+                                  </div>
+                                  <!-- end /.row -->
+
+                                  <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="text_field" placeholder="Código de Segurança (CVV)"
+                                            id="codigo_seguranca" formControlName="codigo_seguranca"                                   
+                                            [ngClass]="{ 'is-invalid': submitted && f.codigo_seguranca.errors }">
+                                            <div *ngIf="submitted && f.codigo_seguranca.errors" class="invalid-feedback">                                        
+                                                <control-messages [control]="checkoutForm.controls.codigo_seguranca"></control-messages>
+                                           </div>
+                                        </div> 
+        
+                                          <!-- <button type="submit" class="btn btn--round btn--default">PAGAR</button> -->                                          
+                                          <button [disabled]="loading" type="submit" class="btn btn--round btn--default">PAGAR</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- end /.information_module-->
+                      </div>
+                      <!-- end /.col-md-6 -->
+                  </div>
+                  <!-- end /.row -->
+              </form>
+              <!-- end /form -->
+          </div>
+          <!-- end /.container -->
+      </div>
+      <!-- end /.dashboard_menu_area -->
+  </section>
+  <!--================================
+      END DASHBOARD AREA
+  =================================-->
+
