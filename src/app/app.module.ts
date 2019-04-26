@@ -49,7 +49,7 @@ import { CurrencyFormatPipe  } from './_pipes/currencyPipe';
   ],
   imports: [
     BrowserModule,AppRoutingModule,FormsModule,        
-    ReactiveFormsModule,HttpClientModule,
+    ReactiveFormsModule,HttpClientModule,    
     NgxMaskModule.forRoot()   
   ],
   providers: [
@@ -57,7 +57,7 @@ import { CurrencyFormatPipe  } from './_pipes/currencyPipe';
     BundleService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },        
-    fakeBackendProvider
+    //fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

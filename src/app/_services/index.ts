@@ -7,3 +7,4 @@ export * from './pager.service';
 export * from './mock.service';
 export * from './cart.service';
 export * from './cep.service';
+export * from './product.service';

@@ -33,7 +33,7 @@ const routes: Routes = [
 
 
   // { path: '', component: DashboardComponent},
-
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },  
 
   //LAYOUT INSIDER
   { 
@@ -42,7 +42,7 @@ const routes: Routes = [
     component: InsideLayoutComponent,
     children: [
       { path: 'vendedor', component: VendedorComponent },
-      { path: 'dashboard', component: DashboardComponent },      
+      { path: 'dashboard', component: DashboardComponent, data: {animation: 'FilterPage'}  },      
       { path: 'pedidos', component: PedidosComponent },
       { path: 'pedido', component: PedidoComponent },
       { path: 'perfil', component: PerfilComponent },
@@ -65,9 +65,8 @@ const routes: Routes = [
   { path: 'blank', component: BlankComponent },
 
   // otherwise redirect to home
-  { path: '**', redirectTo: '' }
-
-  //{ path: '', redirectTo: '/dashboard', pathMatch: 'full' }  
+  { path: '**', redirectTo: '/dashboard' },
+  
 
 ];
 

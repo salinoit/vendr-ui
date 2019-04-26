@@ -23,13 +23,11 @@ export class CartService {
     var conteudo=this.cart.items; 
 
     for (let x=0;x<conteudo.length;x++)
-          {
-            var v1=conteudo[x].vr;
-            var v2=conteudo[x].qtd;
-            this.cart.total += (v1*v2);
-            console.log(conteudo[x]);
-            console.log(this.cart.total);
-          }
+    {
+      var v1=conteudo[x].vr;
+      var v2=conteudo[x].qtd;
+      this.cart.total += (v1*v2);           
+    }
   }
   
   Delete(id:number): boolean{

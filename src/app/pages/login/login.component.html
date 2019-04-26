@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="../../../assets/css/lnr-icon.css">
     <link rel="stylesheet" href="../../../assets/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/loading.css">
+    <link rel="stylesheet" href="../../../assets/css/loading-btn.css">
+    
     <!-- endinject -->
     <!-- Favicon -->
     <link rel="icon" type="../../../assets/image/png" sizes="16x16" href="../../../assets/images/favicon.ico">
@@ -67,8 +70,16 @@
 
                                 <div class="form-group text-center">
                                     <!--<button class="btn btn--md btn--round" type="submit">ENTRAR</button>-->
-                                    <button [disabled]="loading" class="btn btn--md btn--round">ENTRAR</button>
+                                    <button [disabled]="loading" class="btn btn--md btn--round">
+                                    
+                                    <div *ngIf="loading" style="position: absolute; right: 20px;bottom: 15px;" class="ld ld-hourglass ld-spin">
+                                    </div>
+
+                                        ENTRAR
+                                    </button>
                                     <!-- <a [disabled]="loading" class="btn btn--md btn--round" >ENTRAR</a> -->
+
+                                    
                                 </div>
 
                                 <div class="login_assist">
