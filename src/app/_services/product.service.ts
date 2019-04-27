@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { User, Product } from '@app/_models';
+import { User, Product, ProductPage } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -10,6 +10,10 @@ export class ProductService {
 
     getAll() {
         return this.http.get<Product[]>(`${environment.apiUrl}/produto`);
+    }
+
+    getPaged(page:number,size:number,search:string ) {
+        return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}`);
     }
 
     getById(id: number) {        

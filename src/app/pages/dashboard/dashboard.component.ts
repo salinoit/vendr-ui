@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
-import { Observable, Subscription } from 'rxjs';
+import { Subject, Subscriber, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { User, Vendedor } from '@app/_models';
 import { Product } from '@app/_models/product'
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 declare var CloseModalVendedor:any;
 
@@ -24,11 +26,12 @@ export class DashboardComponent implements OnInit {
   currentUser:User;
   _vendedor:Vendedor=null;
   _vendedores:[];
-  _search;
+  _search="";
+  _searchTherm:Subject<string>=new Subject();
   _products:Product[];
   _products_cache:Product[];
   _currentUserSubscription: Subscription;
-
+  loading=false;
 
   // pager object
   pager: any = {};
@@ -42,6 +45,7 @@ export class DashboardComponent implements OnInit {
   ];
   _itensPerPageChange($event)
   { 
+    
     this.loadData();    
   }
   itensPerPage=15;
@@ -66,9 +70,9 @@ export class DashboardComponent implements OnInit {
     {id:4,name:'Favoritos'},
   ]
   _filterByChange($event)
-  {    
+  {       
     this.loadData();    
-  }
+  }  
   filterBy=0;
   
   _sellerChange(vr)
@@ -89,54 +93,22 @@ export class DashboardComponent implements OnInit {
 
 
 
-
-  mock()
-  {
-    
-    // let selectVendedor: any = JSON.parse(localStorage.getItem('selectVendedor')) || null;
-
-    // if (selectVendedor)
-    // {
-      
-    //   this._vendedor=selectVendedor as Vendedor;        
-    // }
-    // else
-    // {   
-    //   this._vendedor=this.currentUser.vendedores[0];                  
-    //   localStorage.setItem('selectVendedor', JSON.stringify(selectVendedor));
-      
-    // }     
-
-    this.productService.getAll().subscribe(prod=>{      
-      this._products=prod;
-      this._products_cache=prod;      
-      this.setPage(1);
-    });
-
-    
-  }
-    
-
-  _searchInput(filterVal: any) {    
-    if (filterVal == "") {
-      this._products = this._products_cache;
-      this.setPage(1);
-    }
-    else {
-      this._products = this._products_cache.filter((item) => item.Descricao.toLowerCase().indexOf(filterVal.toLowerCase())>=0);
-      if (this._products)
-      {
-        this.setPage(1);
-      }
-    }
+  _searchInput(filterVal: any) {       
+    this._searchTherm.next(filterVal);
   }
 
+ 
   
   ngOnInit() {        
+  this._searchTherm.pipe(debounceTime(600),distinctUntilChanged()).subscribe(
+    value=>{ this._search=value; console.log('pesquisando por: ' + value); this.loadData(); }
+  );
+  
+
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     this._currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;        
-      this.mock();            
+      this.loadData();
     });
 
 
@@ -144,15 +116,33 @@ export class DashboardComponent implements OnInit {
   }
 
   setPage(page: number) {    
-    // get pager object from service
-    this.pager = this.pagerService.getPager(this._products.length, page , this.itensPerPage);
-    // get current page of items
-    this.pagedItems = this._products.slice(this.pager.startIndex, this.pager.endIndex + 1);
+
+    this.loading=true;
+    this.productService.getPaged(page,this.itensPerPage,this._search).subscribe(prod=>{      
+      this.loading=false;
+      // get pager object from service
+      this.pager = this.pagerService.getPager(prod.total, page , this.itensPerPage);
+      // get current page of items
+      this.pagedItems = prod.items;          
+      // // get pager object from service
+      // this.pager = this.pagerService.getPager(this._products.length, page , this.itensPerPage);
+      // // get current page of items
+      // this.pagedItems = this._products.slice(this.pager.startIndex, this.pager.endIndex + 1);      
+    });
+
+
+    
   }
 
-  loadData()
+  loadData(page:number=1)
   {
-    //pega o vendedor atual e os filtros e pega os dados    
-    this.setPage(this.pager.actualPage);
+    if (this.pager.actualPage) {
+       //pega o vendedor atual e os filtros e pega os dados    
+       this.setPage(this.pager.actualPage);
+    }
+    else
+    {
+      this.setPage(1);
+    }
   }
 }
