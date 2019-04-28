@@ -28,7 +28,7 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     
     this.userAvatar= this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);  
    
-   
+    
   }
 
     constructor(

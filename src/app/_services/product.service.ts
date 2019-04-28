@@ -17,7 +17,7 @@ export class ProductService {
     }
 
     getById(id: number) {        
-        return this.http.get(`${environment.apiUrl}/users/${id}`);
+        return this.http.get<Product>(`${environment.apiUrl}/produto/${id}`);
     }
 
     register(user: User) {

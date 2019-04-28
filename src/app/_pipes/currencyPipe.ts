@@ -19,6 +19,9 @@ export class CurrencyFormatPipe implements PipeTransform {
             if (locale = 'BRL') {
                 new_value = new_value.replace('.', '|').replace('.', ',').replace('|', '.');
             } 
+            if (locale = '') {
+                new_value = new_value.replace('.', '|').replace('.', ',').replace('|', '.');
+            } 
 
             return new_value                                    
         }

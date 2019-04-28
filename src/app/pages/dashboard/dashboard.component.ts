@@ -5,6 +5,8 @@ import { switchMap } from 'rxjs/operators';
 import { User, Vendedor } from '@app/_models';
 import { Product } from '@app/_models/product'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 
 declare var CloseModalVendedor:any;
 
@@ -20,6 +22,7 @@ export class DashboardComponent implements OnInit {
     private pagerService: PagerService,
     private bundleService:BundleService,
     private productService:ProductService,
+    private sanitizer: DomSanitizer
   ) {}
   
 
@@ -123,15 +126,19 @@ export class DashboardComponent implements OnInit {
       // get pager object from service
       this.pager = this.pagerService.getPager(prod.total, page , this.itensPerPage);
       // get current page of items
-      this.pagedItems = prod.items;          
+      this.pagedItems = prod.items; 
+               
+      //adiciona no array a coluna state, para controlar a animação do botao quando adicionar
+      //ao carrinho
+      this.pagedItems = this.pagedItems.map(function(ad) {
+        ad.state = "0";   
+        return ad;
+      });
       // // get pager object from service
       // this.pager = this.pagerService.getPager(this._products.length, page , this.itensPerPage);
       // // get current page of items
       // this.pagedItems = this._products.slice(this.pager.startIndex, this.pager.endIndex + 1);      
-    });
-
-
-    
+    });    
   }
 
   loadData(page:number=1)
@@ -144,5 +151,26 @@ export class DashboardComponent implements OnInit {
     {
       this.setPage(1);
     }
+  }
+
+  AddCart(e)
+  {
+    if (e.state!="2") {
+        e.state=1;
+        var v=function()
+        {
+          e.state=2;
+          window.clearTimeout();
+        }
+        window.setTimeout(v,2000);
+    }
+    else
+    {
+      e.state="0";
+    }
+  }
+
+  sanitizePicture(vr){            
+    return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);        
   }
 }

@@ -149,16 +149,18 @@
                   <div class="product product--card mb-4 "  >
 
                       <div class="product__thumbnail">
-                          <img src="./assets/images/p2.jpg" alt="Product Image" width="100%" >
+                          <img *ngIf="produto.ImagemProduto" [src]="sanitizePicture(produto.ImagemProduto)" alt="Product Image"  >
+                          <img *ngIf="!produto.ImagemProduto" src="../../../assets/images/p2.jpg" alt="Product Image"  >
+
                           <div class="prod_btn">
-                              <a routerLink="/produto/{{produto.id}}" class="transparent btn--sm btn--round">Visualizar</a>
+                              <a routerLink="/produto/{{produto.IdProdutoServico}}" class="transparent btn--sm btn--round">Visualizar</a>
                           </div>
                           <!-- end /.prod_btn -->
                       </div>
                       <!-- end /.product__thumbnail -->
 
                       <div class="product-desc">
-                          <a routerLink="/produto/{{produto.id}}" class="product_title">
+                          <a routerLink="/produto/{{produto.IdProdutoServico}}" class="product_title">
                               <h4>{{produto.Descricao}}</h4>
                           </a>
                       </div>
@@ -169,7 +171,13 @@
                               <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">{{produto.PrecoVenda | currencyformat:'BRL':true}}</span>
                               <p>
                           </div>
-                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
+                          <a  href="javascript:void(0)" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0" (click)="AddCart(produto)" [class.btnadd]="produto.state=='2'">
+                                <!-- <span *ngIf="produto.state=='1'" style="position: absolute; right: 10px;bottom: 10px;" class="ld ld-ring ld-spin" >
+                                </span> -->
+                              {{ produto.state=="0" ? "COMPRAR":"" }}
+                              {{ produto.state=="1" ? "ADICIONANDO":"" }}
+                              {{ produto.state=="2" ? "ADICIONADO":"" }}
+                            </a>
                       </div>
                       <!-- end /.product-purchase -->
                   </div>

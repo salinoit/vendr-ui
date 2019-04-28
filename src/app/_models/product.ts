@@ -3,5 +3,5 @@ export class Product {
     Tipo: string;
     Descricao: string;
     PrecoVenda: number;
-    ImagemProduto: string;
+    ImagemProduto: string;    
 }

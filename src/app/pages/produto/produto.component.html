@@ -5,12 +5,15 @@
       START SINGLE PRODUCT DESCRIPTION AREA
   ==============================================-->
   <section class="single-product-desc single-product-desc2">
-      <div class="container">
+      <div class="container" *ngIf="_product">
           <div class="row">
               <div class="col-lg-8">
                   <div class="item-preview item-preview2 mb-4 mb-lg-0">
-                      <div class="prev-slide">
-                          <img src="../../../assets/images/itprv2.jpg" alt="Keep calm this isn't the end of the world, the preview is just missing.">
+                      <div class="prev-slide" >
+                          
+                          <img *ngIf="_product.ImagemProduto" [src]="sanitizePicture(_product.ImagemProduto)" alt="{{_product.Descricao}}" width="100%" >
+                          <img *ngIf="!_product.ImagemProduto" src="../../../assets/images/p2.jpg" alt="{{_product.Descricao}}"width="100%"  >
+
                       </div>
 
                       <div class="item__preview-thumb">
@@ -39,7 +42,7 @@
 
                           <div class="tab-content">
                               <div class="tab-pane product-tab fade show active" id="product-details">
-                                  <h1>123456 - Nome Exemplo Produto</h1>
+                                  <h1>{{_product.IdProdutoServico}} - {{_product.Descricao}}</h1>
                                   <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the
                                       mattis, leo quam aliquet congue placerat mi id nisi interdum mollis. Praesent pharetra,
                                       justo ut scel erisque the mattis, leo quam aliquet congue justo ut scelerisque. Praesent
@@ -81,7 +84,7 @@
                           <div class="price">
                               <h1>
                                   <sup>R$</sup>
-                                  <span>200,00</span>
+                                  <span>{{(_product.PrecoVenda | currencyformat:'BRL':true).replace("R$","")}}</span>
                               </h1>
                           </div>
                           <div class="purchase-button">
@@ -96,7 +99,7 @@
                           <div class="price">
                               <h1>
                                   <sup>R$</sup>
-                                  <span>100,00</span>
+                                  <span>{{(_product.PrecoVenda | currencyformat:'BRL':true).replace("R$","")}}</span>
                               </h1>
                           </div>
                           <ul class="pricing-options">
