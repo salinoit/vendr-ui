@@ -8,3 +8,4 @@ export * from './mock.service';
 export * from './cart.service';
 export * from './cep.service';
 export * from './product.service';
+export * from './vendedor.service';

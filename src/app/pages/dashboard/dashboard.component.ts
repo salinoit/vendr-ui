@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
+import { VendedorService, CartService, ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
 import { ImageUtilService } from '@app/_helpers';
 import { Subject, Subscriber, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { User, Vendedor } from '@app/_models';
-import { Product } from '@app/_models/product'
+import { Product, ProductPage, User, Vendedor } from '@app/_models';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 
 declare var CloseModalVendedor: any;
 
@@ -22,18 +24,37 @@ export class DashboardComponent implements OnInit {
     private bundleService: BundleService,
     private productService: ProductService,
     private imageUtil: ImageUtilService,
-    private cartService: CartService
+    private cartService: CartService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private vendedorService:VendedorService
   ) {}
 
   currentUser: User;
   _vendedor: Vendedor = null;
   _vendedores: [];
-  _search = "";
+  _search = '';
   _searchTherm: Subject<string> = new Subject();
-  _products: Product[];
-  _products_cache: Product[];
+  _products: ProductPage;  
   _currentUserSubscription: Subscription;
   loading = false;
+
+
+  _idvendedor:number;
+  initializeVendedor(): void { //apenas para exibir os detalhes do vendedor
+
+    this.route.queryParams.subscribe(params => {
+       this._idvendedor=params['id'];
+      if (this._idvendedor) {
+        this.vendedorService.getById(this._idvendedor)
+        .subscribe(vend => {
+          this._vendedor = vend;
+          console.log(vend);
+          });
+     }
+    });
+  }
+
 
   // pager object
   pager: any = {};
@@ -102,9 +123,11 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnInit() {
-  this._searchTherm.pipe(debounceTime(1200),distinctUntilChanged()).subscribe(
-    value=>{ this._search=value; console.log('pesquisando por: ' + value); this.loadData(); }
-  );
+    this.initializeVendedor();
+
+    this._searchTherm.pipe(debounceTime(1200),distinctUntilChanged()).subscribe(
+      value=>{ this._search=value; console.log('pesquisando por: ' + value); this.loadData(); }
+    );
 
 
   this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
@@ -119,8 +142,15 @@ export class DashboardComponent implements OnInit {
 
   setPage(page: number) {
 
+    var vend=0;
+    this.route.queryParams.subscribe(params => {
+      vend=params['id'];
+      if (!vend) vend=0;
+    });
+
     this.loading=true;
-    this.productService.getPaged(page,this.itensPerPage,this._search).subscribe(prod=>{
+    this.productService.getPaged(page,this.itensPerPage,this._search,vend).subscribe(prod=>{
+      this._products=prod;
       this.loading=false;
       // get pager object from service
       this.pager = this.pagerService.getPager(prod.total, page , this.itensPerPage);

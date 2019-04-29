@@ -44,12 +44,12 @@
           <div class="row">
               <div class="col-md-12">
                   <h1 class="page-title">
-                      <!-- <a class="text-white" routerLink="/vendedor">
-                          <img *ngIf="_vendedor" class="pull-left mr-4 avatar-vendedor" src="./assets/images/{{_vendedor.avatar}}" alt="Imagem Vendedor" width="100" > Nome Vendedor<br>
-                          <small *ngIf="_products.length>1" >{{_products.length + " itens"}} </small>
-                          <small *ngIf="_products.length==1" >1 Item </small>
-                          <small *ngIf="_products.length==0" >Nenhum item</small>
-                      </a> -->
+                      <a class="text-white" href="javascript:void(0)" *ngIf="_products">
+                          <img *ngIf="_vendedor" class="pull-left mr-4 avatar-vendedor" [src]="sanitizePicture(_vendedor.foto)" alt="Imagem Vendedor" width="100" >{{_vendedor.nome}}<br>
+                          <small *ngIf="_products.total>1" >{{_products.total + " itens"}} </small>
+                          <small *ngIf="_products.total==1" >1 Item </small>
+                          <small *ngIf="_products.total==0" >Nenhum item</small>
+                      </a>
                   </h1>
               </div>
               <!-- end /.col-md-12 -->

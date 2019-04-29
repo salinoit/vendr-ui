@@ -9,7 +9,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     constructor() { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {        
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
 
@@ -22,7 +22,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 let filteredUsers = users.filter(user => {
                     return user.email === request.body.email && user.password === request.body.password;
                 });
-                    
+
 
                 if (filteredUsers.length) {
                     // if login details are valid return 200 OK with user details and fake jwt token
@@ -32,7 +32,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         email: user.email,
                         nome: user.nome,
                         celular: user.celular,
-                        token: 'fake-jwt-token',                        
+                        token: 'fake-jwt-token',
                         vendedores:user.vendedores
                     };
 
@@ -85,25 +85,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 // save new user
                 newUser.id = users.length + 1;
 
-                //VENDEDORES *****************
-                let _vendedores=[];
-                let x=0;
-                for (x=1;x<10;x++)
-                {
-                    let _vendedor=new Vendedor();
-                    _vendedor.id=x;
-                    _vendedor.avatar="v" + x + ".jpg";
-                    _vendedor.iddle="Vendedor " + x;
-                    _vendedores.push(_vendedor);    
-                }
-                
-                
-                newUser.vendedores=_vendedores;
+
                 //******************************
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
 
-                
+
 
                 // respond 200 OK
                 return of(new HttpResponse({ status: 200 }));
@@ -136,7 +123,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // pass through any requests not handled above
             return next.handle(request);
-            
+
         }))
 
         // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)

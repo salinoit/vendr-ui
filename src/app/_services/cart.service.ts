@@ -82,6 +82,11 @@ export class CartService {
     this.sendDataSubject.next(carr);
 
   }
+
+  public Clear(): void
+  {
+    
+  }
   public InsertCart(novo: PreloadCartItem): void {
 
 			if (localStorage.getItem('Cart') == null) {

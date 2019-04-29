@@ -12,11 +12,11 @@ export class ProductService {
         return this.http.get<Product[]>(`${environment.apiUrl}/produto`);
     }
 
-    getPaged(page:number,size:number,search:string ) {
-        return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}`);
+    getPaged(page:number,size:number,search:string,vendedor:number ) { //vendedor 0 = todos
+        return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}&vendedor=${vendedor}`);
     }
 
-    getById(id: number) {        
+    getById(id: number) {
         return this.http.get<Product>(`${environment.apiUrl}/produto/${id}`);
     }
 
@@ -32,5 +32,5 @@ export class ProductService {
         return this.http.delete(`${environment.apiUrl}/users/${id}`);
     }
 
-    
+
 }

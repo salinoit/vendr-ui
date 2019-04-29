@@ -1,6 +1,7 @@
 export class Vendedor {
-    id:Number;
-    iddle:String;
-    name:String;
-    avatar:String;
+    id_vendedor:number;
+    id_perfil:number;
+    nome:string;
+    email:string;
+    foto:string;
 }
