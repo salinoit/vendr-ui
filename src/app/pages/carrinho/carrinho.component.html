@@ -24,15 +24,15 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div class="row" *ngIf="currentCart">
+                            <div class="col-md-12" *ngFor="let item of currentCart.items">
                                 <div class="single_product clearfix">
                                     <div class="col-lg-5 col-md-7 v_middle">
                                         <div class="product__description">
-                                            <a routerLink="/produto/1"><img src="./assets/images/pur2.jpg" alt="Imagem Produto"></a>
+                                            <a routerLink="/produto/1"><img [src]="sanitizePicture(item.produto.ImagemProduto)" alt="Imagem Produto"></a>
                                             <div class="short_desc">
                                                 <a >
-                                                    <h4>Nome Exemplo Produto 1</h4>
+                                                    <h4>{{item.produto.Descricao}}</h4>
                                                 </a>
                                                 <p class="mb-2">Nunc placerat mi id nisi inter dum mollis. Praesent phare...</p>
                                             </div>
@@ -45,7 +45,9 @@
                                         <div class="product__additional_info">
                                             <ul>
                                                 <li>
-                                                    <input class="w-50" type="number" class="text_field">
+                                                    <input class="w-50" type="number" value="{{item.qtd}}"
+                                                    [(ngModel)]="item.qtd"
+                                                    [ngModelOptions]="{ standalone: true }" (change)="_qtyChange()">
                                                 </li>
                                             </ul>
                                         </div>
@@ -56,57 +58,10 @@
                                     <div class="col-lg-4 col-md-3 v_middle">
                                         <div class="product__price_download">
                                             <div class="item_price v_middle">
-                                                <span>R$1200,00</span>
+                                                <span>{{item.produto.PrecoVenda | currencyformat:'BRL':true}}</span>
                                             </div>
                                             <div class="item_action v_middle">
-                                                <a href="#" class="remove_from_cart">
-                                                    <span class="lnr lnr-trash"></span>
-                                                </a>
-                                            </div>
-                                            <!-- end /.item_action -->
-                                        </div>
-                                        <!-- end /.product__price_download -->
-                                    </div>
-                                    <!-- end /.col-md-4 -->
-                                </div>
-                                <!-- end /.single_product -->
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="single_product clearfix">
-                                    <div class="col-lg-5 col-md-7 v_middle">
-                                        <div class="product__description">
-                                            <a ><img src="./assets/images/pur5.jpg" alt="Imagem Produto"></a>
-                                            <div class="short_desc">
-                                                <a >
-                                                    <h4>Nome Exemplo Produto 2</h4>
-                                                </a>
-                                                <p class="mb-2">Nunc placerat mi id nisi inter dum mollis. Praesent phare...</p>
-                                            </div>
-                                        </div>
-                                        <!-- end /.product__description -->
-                                    </div>
-                                    <!-- end /.col-md-5 -->
-
-                                    <div class="col-lg-3 col-md-2 v_middle">
-                                        <div class="product__additional_info">
-                                            <ul>
-                                                <li>
-                                                    <input class="w-50" type="number" class="text_field">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <!-- end /.product__additional_info -->
-                                    </div>
-                                    <!-- end /.col-md-3 -->
-
-                                    <div class="col-lg-4 col-md-3 v_middle">
-                                        <div class="product__price_download">
-                                            <div class="item_price v_middle">
-                                                <span>R$500,00</span>
-                                            </div>
-                                            <div class="item_action v_middle">
-                                                <a href="#" class="remove_from_cart">
+                                                <a href="javascript:void(0)" class="remove_from_cart" (click)="Remove(item.produto.IdProdutoServico)">
                                                     <span class="lnr lnr-trash"></span>
                                                 </a>
                                             </div>
@@ -124,13 +79,13 @@
                         <div class="row">
                             <div class="col-md-6 offset-md-6">
                                 <div class="cart_calculation">
-                                    <div class="cart--subtotal">
+                                    <!-- <div class="cart--subtotal">
                                         <p class="mb-0">
                                             <span>Subtotal</span>R$1700,00</p>
-                                    </div>
-                                    <div class="cart--total">
+                                    </div> -->
+                                    <div class="cart--total" *ngIf='currentCart'>
                                         <p class="mb-0">
-                                            <span>TOTAL</span>R$1700,00</p>
+                                            <span>TOTAL</span>{{currentCart.total_fmt}}</p>
                                     </div>
 
                                     <a routerLink="/checkout" class="btn btn--round btn--md checkout_link">FINALIZAR COMPRA</a>
@@ -152,4 +107,8 @@
     <!--================================
         END DASHBOARD AREA
     =================================-->
-
+<!--
+    <div *ngIf="loading" class="panel panel-default " id="myoverlay">
+        <div class="ringer ld ld-ring ld-spin">
+            </div>
+    </div> -->

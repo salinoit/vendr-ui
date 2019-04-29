@@ -1,74 +1,101 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
-import { Product } from "@app/_models/product";
-import { Cart, CartItem } from "@app/_models/cart";
+import { Product } from '@app/_models/product';
+import { Cart, CartItem, PreloadCart, PreloadCartItem } from '@app/_models/cart';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@environments/environment';
 
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CartService {
-   cart:Cart;
-   /***************************** */
+   private sendData: Observable<PreloadCart>;
+   private sendDataSubject: BehaviorSubject<PreloadCart>;
 
+   currentCart: Observable<Cart>;
+   private currentCartSubject: BehaviorSubject<Cart>;
 
-   items:Array<CartItem>=[
-    {productId:1,title:'Produto 1',avatar:'capro1.jpg',vr:128.12,qtd:1},
-    {productId:2,title:'Produto 2',avatar:'capro2.jpg',vr:136.20,qtd:1},
-    {productId:3,title:'Produto 3',avatar:'capro1.jpg',vr:1020.00,qtd:1}
-  ]
+   constructor(
+     private http: HttpClient
+    ) {
+      this.sendDataSubject = new BehaviorSubject<PreloadCart>(JSON.parse(localStorage.getItem('Cart')));
+      this.sendData = this.sendDataSubject.asObservable();
 
-  Recalc()
+      this.currentCartSubject = new BehaviorSubject<Cart>(JSON.parse(localStorage.getItem('CartFix!')));
+      this.currentCart = this.currentCartSubject.asObservable();
+
+      this.sendData.subscribe(sd => {
+        this.ProcessServerCart(sd);
+       });
+
+       this.sendDataSubject.subscribe(p=>console.log(p));
+   }
+
+   ProcessServerCart(sr: PreloadCart) {
+    console.log(sr);
+    if (sr) {
+      console.log('foi');
+      this.http.post<Cart>(`${environment.apiUrl}/cart/`, sr).subscribe(carr=>{
+        console.log(carr);
+        this.currentCartSubject.next(carr);
+        const newState = new PreloadCart();
+        newState.existentes = [];
+        newState.novo = new PreloadCartItem();
+
+        for (var i of carr.items){
+          newState.existentes.push({id:i.produto.IdProdutoServico,qtd:i.qtd});
+        }
+        localStorage.setItem('Cart', JSON.stringify(newState));
+      });
+    }
+  }
+
+  public get currentCartValue(): Cart {
+  return this.currentCartSubject.value;
+  }
+  public get currentPreloadValue(): PreloadCart {
+  return this.sendDataSubject.value;
+  }
+
+  ReloadCart()
   {
-    this.cart.total=0;
-    var conteudo=this.cart.items; 
-
-    for (let x=0;x<conteudo.length;x++)
+    const c = new PreloadCart();
+    c.existentes = [];
+    for (let n of this.currentCartValue.items)
     {
-      var v1=conteudo[x].vr;
-      var v2=conteudo[x].qtd;
-      this.cart.total += (v1*v2);           
+        c.existentes.push({id:n.produto.IdProdutoServico,qtd:n.qtd});
     }
+    this.ProcessServerCart(c);
   }
-  
-  Delete(id:number): boolean{
-
-    
-    
-    var index=this.cart.items.findIndex(item=>item.productId==id);                
-
-    if (index>=0)
+  Delete(id)
+  {
+    let carr = JSON.parse(localStorage.getItem('Cart')) as PreloadCart;
+    let index=0;
+    for (let x of carr.existentes)
     {
-      this.cart.items.splice(index, 1);
-       
-      this.Recalc();
+      if (x.id==id)
+      {
+        break;
+      }
+      index++;
+    }
 
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-    
+    carr.existentes.splice(index,1);
+    this.sendDataSubject.next(carr);
+
   }
+  public InsertCart(novo: PreloadCartItem): void {
 
-  public initialize():void {    
-				if (localStorage.getItem('cart') == null) {                    
-    
-          this.cart=new Cart();
-          this.cart.total=0;
-          this.cart.items=new Array<CartItem>();
-    
-          for (let x=0;x<this.items.length;x++) {                                    
-            this.cart.items.push((this.items[x]));
-          }          
-
-          localStorage.setItem('cart', JSON.stringify(this.cart));
-          
+			if (localStorage.getItem('Cart') == null) {
+          //do nothing
+          let cartn=new PreloadCart();
+          cartn.existentes=[];
+          cartn.novo = novo;
+          this.sendDataSubject.next(cartn);
 				} else {
-          this.cart = JSON.parse(localStorage.getItem('cart')) as Cart;										          
-        }        				
-
-        this.Recalc();
-    };      
+          let carr = JSON.parse(localStorage.getItem('Cart')) as PreloadCart;
+          carr.novo = novo;
+          this.sendDataSubject.next(carr);
+          //this.ProcessServerCart(carr);
+        }
+    }
 }
 

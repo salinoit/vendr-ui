@@ -5,8 +5,8 @@ import { CartService,BundleService,UserService,AuthenticationService } from '@ap
 import { Cart,User } from '@app/_models';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { 
-  NavigationStart, NavigationCancel, NavigationEnd 
+import {
+  NavigationStart, NavigationCancel, NavigationEnd
 } from '@angular/router';
 
 @Component({
@@ -17,57 +17,60 @@ import {
 })
 
 export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
-  currentUser:User;  
-  currentCart:Cart;
+  currentUser: User;
+  currentCart: Cart;
   currentUserSubscription: Subscription;
+  currentCartSubscription: Subscription;
+  loading: boolean;
   users: User[] = [];
   userAvatar;
-  
 
-  profilePicture(vr){        
-    
-    this.userAvatar= this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);  
-   
-    
+
+  profilePicture(vr){
+    this.userAvatar= this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + vr);
   }
 
     constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private userService: UserService,
-    private bundleService:BundleService,
-    private cartService:CartService,
+    private bundleService: BundleService,
+    private cartService: CartService,
     private sanitizer: DomSanitizer
   ) {
 
-    
+
     this.authenticationService.currentUser.subscribe(x => {
       try {
         if (x.foto && x.foto!=''){
-          this.profilePicture(x.foto);      
+          this.profilePicture(x.foto);
         }
       }
       catch {}
-      this.currentUser = x;            
-      
+      this.currentUser = x;
+
     });
+
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-      this.currentUser = user;                        
+      this.currentUser = user;
+    });
+    this.currentCartSubscription = this.cartService.currentCart.subscribe(ccc => {
+      this.currentCart = ccc;
     });
 
-
-
-    this.cartService.initialize();
-    this.currentCart=this.cartService.cart;        
     this.loading = false;
 
   }
 
- 
+
 
   getTotalCart()
   {
-    return formatCurrency(this.currentCart.total,"pt-BR","R$ ");    
+    if (this.currentCart) {
+      return this.currentCart.total_fmt;
+    } else {
+      return 'R$ 0,00';
+    }
   }
   logout() {
     this.authenticationService.logout();
@@ -78,31 +81,40 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentUserSubscription.unsubscribe();
   }
 
-  ngOnInit() {    
-    //this.logout();
+  ngOnInit() {
     this.bundleService.AddScript('./assets/js/main.js');
   }
 
   removeItemCart(id)
-  {    
+  {
     this.cartService.Delete(id);
   }
-  
-  loading;//wait func
+
   ngAfterViewInit() {
     this.router.events
         .subscribe((event) => {
             if(event instanceof NavigationStart) {
                 this.loading = true;
-                
+
             }
             else if (
-                event instanceof NavigationEnd || 
+                event instanceof NavigationEnd ||
                 event instanceof NavigationCancel
                 ) {
-                  
+
                 this.loading = false;
             }
         });
 }
+
+sanitizePicture(vr){
+  if (vr) {
+  return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);
+  }
+  else
+  {
+    return "../../../assets/images/p2.jpg";
+  }
+}
+
 }

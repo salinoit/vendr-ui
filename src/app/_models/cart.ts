@@ -1,12 +1,23 @@
+import { Product } from './product';
+
 export class Cart {
-    public total:number;
-    public items:Array<CartItem>;
+  total: number;
+  total_fmt: string;
+  items: CartItem[];
 }
 
 export class CartItem {
-    productId:Number;
-    title:String;
-    avatar:String;
+  qtd: number;
+  produto: Product;
+}
+
+export class PreloadCart
+{
+    existentes:PreloadCartItem[];
+    novo:PreloadCartItem;
+}
+export class PreloadCartItem
+{
+    id:number;
     qtd:number;
-    vr:number;
 }

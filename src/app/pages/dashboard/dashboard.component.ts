@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
+import { CartService, ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
+import { ImageUtilService } from '@app/_helpers';
 import { Subject, Subscriber, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { User, Vendedor } from '@app/_models';
 import { Product } from '@app/_models/product'
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-
-declare var CloseModalVendedor:any;
+declare var CloseModalVendedor: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -18,38 +17,38 @@ declare var CloseModalVendedor:any;
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private authenticationService:AuthenticationService,
+    private authenticationService: AuthenticationService,
     private pagerService: PagerService,
-    private bundleService:BundleService,
-    private productService:ProductService,
-    private sanitizer: DomSanitizer
+    private bundleService: BundleService,
+    private productService: ProductService,
+    private imageUtil: ImageUtilService,
+    private cartService: CartService
   ) {}
-  
 
-  currentUser:User;
-  _vendedor:Vendedor=null;
-  _vendedores:[];
-  _search="";
-  _searchTherm:Subject<string>=new Subject();
-  _products:Product[];
-  _products_cache:Product[];
+  currentUser: User;
+  _vendedor: Vendedor = null;
+  _vendedores: [];
+  _search = "";
+  _searchTherm: Subject<string> = new Subject();
+  _products: Product[];
+  _products_cache: Product[];
   _currentUserSubscription: Subscription;
-  loading=false;
+  loading = false;
 
   // pager object
   pager: any = {};
   // paged items
   pagedItems: any[];
-      
+
   _itensPerPage=[
     {id:15,name:'15 Itens por Página'},
     {id:30,name:'30 Itens por Página'},
     {id:45,name:'45 Itens por Página'},
   ];
   _itensPerPageChange($event)
-  { 
-    
-    this.loadData();    
+  {
+
+    this.loadData();
   }
   itensPerPage=15;
 
@@ -59,8 +58,8 @@ export class DashboardComponent implements OnInit {
     {id:2,name:'Preço: Maior para Menor'},
   ]
   _itensOrderChange($event)
-  {    
-    this.loadData();    
+  {
+    this.loadData();
   }
   itensOrder=1;
 
@@ -73,20 +72,20 @@ export class DashboardComponent implements OnInit {
     {id:4,name:'Favoritos'},
   ]
   _filterByChange($event)
-  {       
-    this.loadData();    
-  }  
+  {
+    this.loadData();
+  }
   filterBy=0;
-  
+
   _sellerChange(vr)
-  {      
+  {
     //CHANGE
     // let selectVendedor=this.currentUser.vendedores.filter(item => item.id==vr);
     // if (selectVendedor)
     // {
     //   this._vendedor=selectVendedor[0];
-    //   localStorage.setItem('selectVendedor', JSON.stringify(this._vendedor));      
-    // }        
+    //   localStorage.setItem('selectVendedor', JSON.stringify(this._vendedor));
+    // }
     // CloseModalVendedor();
 
     this.loadData();
@@ -96,21 +95,21 @@ export class DashboardComponent implements OnInit {
 
 
 
-  _searchInput(filterVal: any) {       
+  _searchInput(filterVal: any) {
     this._searchTherm.next(filterVal);
   }
 
- 
-  
-  ngOnInit() {        
-  this._searchTherm.pipe(debounceTime(600),distinctUntilChanged()).subscribe(
+
+
+  ngOnInit() {
+  this._searchTherm.pipe(debounceTime(1200),distinctUntilChanged()).subscribe(
     value=>{ this._search=value; console.log('pesquisando por: ' + value); this.loadData(); }
   );
-  
 
-    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-    this._currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-      this.currentUser = user;        
+
+  this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  this._currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
+      this.currentUser = user;
       this.loadData();
     });
 
@@ -118,33 +117,33 @@ export class DashboardComponent implements OnInit {
     this.bundleService.AddScript('./assets/js/custom.js');
   }
 
-  setPage(page: number) {    
+  setPage(page: number) {
 
     this.loading=true;
-    this.productService.getPaged(page,this.itensPerPage,this._search).subscribe(prod=>{      
+    this.productService.getPaged(page,this.itensPerPage,this._search).subscribe(prod=>{
       this.loading=false;
       // get pager object from service
       this.pager = this.pagerService.getPager(prod.total, page , this.itensPerPage);
       // get current page of items
-      this.pagedItems = prod.items; 
-               
+      this.pagedItems = prod.items;
+
       //adiciona no array a coluna state, para controlar a animação do botao quando adicionar
       //ao carrinho
       this.pagedItems = this.pagedItems.map(function(ad) {
-        ad.state = "0";   
+        ad.state = "0";
         return ad;
       });
       // // get pager object from service
       // this.pager = this.pagerService.getPager(this._products.length, page , this.itensPerPage);
       // // get current page of items
-      // this.pagedItems = this._products.slice(this.pager.startIndex, this.pager.endIndex + 1);      
-    });    
+      // this.pagedItems = this._products.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    });
   }
 
   loadData(page:number=1)
   {
     if (this.pager.actualPage) {
-       //pega o vendedor atual e os filtros e pega os dados    
+       //pega o vendedor atual e os filtros e pega os dados
        this.setPage(this.pager.actualPage);
     }
     else
@@ -157,20 +156,21 @@ export class DashboardComponent implements OnInit {
   {
     if (e.state!="2") {
         e.state=1;
+        this.cartService.InsertCart({id:e.IdProdutoServico,qtd:1})
         var v=function()
         {
           e.state=2;
           window.clearTimeout();
         }
         window.setTimeout(v,2000);
-    }
-    else
+    } else
     {
       e.state="0";
     }
   }
 
-  sanitizePicture(vr){            
-    return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);        
+
+  sanitizePicture(vr){
+    return this.imageUtil.sanitizePicture(vr, '../../../assets/images/p2.jpg');
   }
 }

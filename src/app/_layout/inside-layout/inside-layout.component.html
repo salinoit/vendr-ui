@@ -31,12 +31,12 @@
                           <div class="author__notification_area mr-md-4">
                               <div class="d-md-none" style="position: relative; top: 19px;">
                                   <a class="btn-carrinho" routerLink="/carrinho">
-                                      <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span> 
-                                      <span class="d-none d-md-inline-block">{{currentCart.total | currencyformat:'BRL':true }}</span>
+                                      <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span>
+                                      <span *ngIf="currentCart" class="d-none d-md-inline-block">{{currentCart.total | currencyformat:'BRL':true }}</span>
                                   </a>
                                   <span class="notification_count purch">2</span>
                               </div>
-                            
+
                               <ul class="d-none d-md-inline-block">
                                   <li class="has_dropdown">
                                       <div class="icon_wrap">
@@ -48,38 +48,41 @@
                                             border-radius: 200px;
                                             margin-top: 10px;
                                             font-weight: 500;">
-                                        <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span> 
+                                        <span *ngIf="currentCart" class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span>
                                               <span>{{getTotalCart()}}</span>
                                           </span>
-                                          <span *ngIf="currentCart.items" class="notification_count purch">{{currentCart.items.length}}</span>
+                                          <span *ngIf="currentCart" class="notification_count purch">{{currentCart.items.length}}</span>
                                       </div>
 
-                                      <div class="dropdown dropdown--cart d-none d-md-block" *ngIf="currentCart.items.length>0">
+                                      <div class="dropdown dropdown--cart d-none d-md-block" *ngIf="currentCart && currentCart.items.length>0">
                                           <div class="cart_area">
-                                              <div class="cart_product" *ngFor="let item of currentCart.items">
-                                                  
+                                              <div class="cart_product" *ngFor="let item of currentCart.items | slice:0:3; let i=index">
+
                                                   <div class="product__info">
                                                       <div class="thumbn">
-                                                            
-                                                          <img src="./assets/images/{{item.avatar}}" alt="cart product thumbnail">
+
+                                                          <img [src]="sanitizePicture(item.produto.ImagemProduto)" alt="cart product thumbnail">
                                                       </div>
 
                                                       <div class="info">
-                                                          <a class="title" routerLink="/produto/{{item.id}}" >{{item.title}}</a>
+                                                          <a class="title" routerLink="/produto/{{item.produto.IdProdutoServico}}" >{{item.produto.Descricao}}</a>
                                                       </div>
-                                                  </div>                                                  
+                                                  </div>
                                                   <div class="product__action">
-                                                      <a href="javascript::return(0)" (click)="removeItemCart(item.productId)">
+                                                      <a href="javascript::return(0)" (click)="removeItemCart(item.produto.IdProdutoServico)">
                                                           <span class="lnr lnr-trash"></span>
                                                       </a>
-                                                      <p>{{ item.vr | currencyformat }}</p>
+
+                                                      <p>
+                                                          <small>{{item.qtd}})</small> {{ item.produto.PrecoVenda | currencyformat:'BRL':true }}
+                                                      </p>
                                                   </div>
-                                              </div>                                             
-                                              <div class="total">
+                                              </div>
+                                              <div class="total" *ngIf="currentCart">
                                                   <p class="m-0">
                                                       <span>Total :</span>{{currentCart.total | currencyformat:'BRL':true }}</p>
                                               </div>
-                                              
+
                                               <div class="cart_action">
                                                   <a class="go_cart" routerLink="/carrinho">Carrinho</a>
                                                   <a class="go_checkout" routerLink="/checkout">Checkout</a>
@@ -185,7 +188,7 @@
       END MENU AREA
   =================================-->
 
-  
+
 <router-outlet></router-outlet>
-  
+
   <app-footer></app-footer>

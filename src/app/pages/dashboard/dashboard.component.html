@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  
+
 <!-- FIM DO LAYOUT DO MODAL -->
 
 
@@ -91,7 +91,7 @@
                           <!-- start mainmenu__search -->
                       </div>
                   </div>
-                  
+
                   <div class="row filter-bar filter-bar3 m-0">
                       <div class="col-xs-12 w-100">
                           <div class="filter__option filter--select">
@@ -184,13 +184,13 @@
                   <!-- end /.single-product -->
               </div>
               <!-- end /.col-md-3 -->
-                          
+
           </div>
           <!-- end /.row -->
 
 
 
-          
+
           <div class="row" *ngIf="pager.pages && pager.pages.length">
               <div class="col-md-12">
                   <div class="pagination-area">
@@ -202,7 +202,7 @@
 
 
                               <a (click)="setPage(page)" href="javascript:void(0);" class="page-numbers" *ngFor="let page of pager.pages" [ngClass]="{current:pager.currentPage === page}">{{page}}</a>
-                              
+
 
                               <a class="next page-numbers" href="javascript:void(0);" [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)" >
                                   <span class="lnr lnr-arrow-right"></span>
