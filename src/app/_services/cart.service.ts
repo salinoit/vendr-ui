@@ -26,15 +26,13 @@ export class CartService {
         this.ProcessServerCart(sd);
        });
 
-       this.sendDataSubject.subscribe(p=>console.log(p));
+       //this.sendDataSubject.subscribe(p=>console.log(p));
    }
 
    ProcessServerCart(sr: PreloadCart) {
-    console.log(sr);
     if (sr) {
-      console.log('foi');
+
       this.http.post<Cart>(`${environment.apiUrl}/cart/`, sr).subscribe(carr=>{
-        console.log(carr);
         this.currentCartSubject.next(carr);
         const newState = new PreloadCart();
         newState.existentes = [];
@@ -85,7 +83,7 @@ export class CartService {
 
   public Clear(): void
   {
-    
+
   }
   public InsertCart(novo: PreloadCartItem): void {
 

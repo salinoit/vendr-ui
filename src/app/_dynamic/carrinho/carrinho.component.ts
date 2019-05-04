@@ -32,7 +32,7 @@ export class CarrinhoComponent implements OnInit {
 
   sanitizePicture(vr)
   {
-    return this.imageUtil.sanitizePicture(vr, '../../../assets/images/p2.jpg');
+    return this.imageUtil.sanitizePicture(vr);
   }
   _qtyChange()
   {

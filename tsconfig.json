@@ -12,7 +12,7 @@
     "importHelpers": true,
     "target": "es5",
 
-    
+
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -22,7 +22,7 @@
     ],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@content":["assets/*"],
+      "@content/*":["src/assets/*"],
       "@environments/*": ["src/environments/*"]
     },
   }

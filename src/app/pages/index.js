@@ -7,7 +7,5 @@ export * from './register/register.component';
 export * from './vendedor/vendedor.component';
 export * from './pedidos/pedidos.component';
 export * from './pedido/pedido.component';
-export * from './perfil/perfil.component';
-export * from './carrinho/carrinho.component';
 export * from './produto/produto.component';
 export * from './checkout/checkout.component';

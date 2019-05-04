@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ValidationService } from '../../_services/validation.service';
+import { ValidationService } from '@app/_services/validation.service';
 
 @Component({
   selector: 'control-messages',
@@ -17,7 +17,7 @@ export class ControlMessagesComponent {
       if (this.control.errors.hasOwnProperty(propertyName)) {
         return ValidationService.getValidatorErrorMessage(propertyName, this.control.errors[propertyName]);
       }
-    }    
+    }
     return null;
   }
 }

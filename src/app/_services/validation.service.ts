@@ -17,7 +17,7 @@ export class ValidationService {
         'minlength': `Tamanho mínimo ${validatorValue.requiredLength} caracteres`,
         'passwordMismatch': `As senhas não conferem`,
     };
-
+    console.log(validatorName);
     return config[validatorName];
 }
 
@@ -32,8 +32,8 @@ static creditCardValidator(control) {
 }
 }
 
-static emailValidator(control) {    
-    // RFC 2822 compliant regex    
+static emailValidator(control) {
+    // RFC 2822 compliant regex
     if (control.value.match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)) {
         return null;
     } else {
@@ -64,7 +64,7 @@ static MustMatch(controlName: string, matchingControlName: string) {
 
         // set error on matchingControl if validation fails
         if (control.value !== matchingControl.value) {
-            
+
             matchingControl.setErrors({'passwordMismatch':true});
         } else {
             matchingControl.setErrors(null);

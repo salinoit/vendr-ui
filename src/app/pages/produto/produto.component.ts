@@ -4,6 +4,7 @@ import { ProductService } from '@app/_services/product.service';
 import { Location } from '@angular/common';
 import { Product } from '@app/_models/product';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ImageUtilService } from '@app/_helpers';
 
 
 
@@ -19,7 +20,8 @@ export class ProdutoComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private location: Location,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private imageUtil: ImageUtilService
 
   ) { }
 
@@ -38,7 +40,7 @@ export class ProdutoComponent implements OnInit {
   }
 
   sanitizePicture(vr){
-    return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);
+    return this.imageUtil.sanitizePicture(vr);
   }
 
 }

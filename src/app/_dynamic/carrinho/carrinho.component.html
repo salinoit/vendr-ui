@@ -29,7 +29,7 @@
                                 <div class="single_product clearfix">
                                     <div class="col-lg-5 col-md-7 v_middle">
                                         <div class="product__description">
-                                            <a routerLink="/produto/1"><img [src]="sanitizePicture(item.produto.ImagemProduto)" alt="Imagem Produto"></a>
+                                            <a routerLink="/produto/{{item.produto.IdProdutoServico}}"><img [src]="sanitizePicture(item.produto.ImagemProduto)" alt="Imagem Produto"></a>
                                             <div class="short_desc">
                                                 <a >
                                                     <h4>{{item.produto.Descricao}}</h4>

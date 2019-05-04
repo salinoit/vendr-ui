@@ -18,18 +18,18 @@ export class ImageUtilService {
         return false;
     }
   }
-  sanitizePicture(vr, nr){
+  sanitizePicture(vr){
     if (vr) {
       //if (this.isBase64(vr)) {
       if (vr.length>200) {
         return this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + vr);
       } else
       {
-        return nr;
+        return '../../../assets/images/p2.jpg';
       }
     } else
     {
-      return nr;
+      return '../../../assets/images/p2.jpg';
     }
   }
 

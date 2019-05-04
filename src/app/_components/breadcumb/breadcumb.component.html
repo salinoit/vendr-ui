@@ -1,4 +1,3 @@
-
     <!--================================
         START BREADCRUMB AREA
     =================================-->
@@ -9,7 +8,7 @@
                   <div class="breadcrumb">
                       <ul>
                           <li>
-                              <a routerLink='/dashboard'>Home</a>
+                              <a href='javascript:void(0)' routerLink='/dashboard'>Home</a>
                           </li>
                           <li>
                               <a class="d-block d-sm-none" >{{title}}}</a>
@@ -17,8 +16,8 @@
                       </ul>
                   </div>
 
-                  <h1 *ngIf="getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" (click)="navigate(getLink())">{{title}}</h1>
-                  <h1 *ngIf="!getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" >{{title}}</h1>
+                  <!-- <h1 *ngIf="getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" (click)="navigate(getLink())">{{title}}</h1>
+                  <h1 *ngIf="!getLink()" class="d-none d-sm-block page-title pt-md-2 pt-lg-3" >{{title}}</h1> -->
               </div>
               <!-- end /.col-md-12 -->
           </div>

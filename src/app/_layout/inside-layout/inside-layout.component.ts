@@ -1,5 +1,6 @@
 import { Component, OnInit,OnDestroy, AfterViewInit } from '@angular/core';
 import { Router,RouterOutlet } from '@angular/router';
+import { ImageUtilService } from '@app/_helpers/image-util.service';
 import { formatCurrency  } from '@angular/common';
 import { CartService,BundleService,UserService,AuthenticationService } from '@app/_services';
 import { Cart,User } from '@app/_models';
@@ -30,14 +31,18 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userAvatar= this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + vr);
   }
 
+
     constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private bundleService: BundleService,
     private cartService: CartService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private imageUtil: ImageUtilService,
   ) {
+
+
 
 
     this.authenticationService.currentUser.subscribe(x => {
@@ -73,6 +78,7 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   logout() {
+    localStorage.clear();
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
@@ -108,13 +114,6 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 }
 
 sanitizePicture(vr){
-  if (vr) {
-  return this.sanitizer.bypassSecurityTrustUrl("data:image/png;base64," + vr);
-  }
-  else
-  {
-    return "../../../assets/images/p2.jpg";
-  }
+   return this.imageUtil.sanitizePicture(vr);
 }
-
 }

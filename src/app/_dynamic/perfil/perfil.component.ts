@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { BundleService } from '../../_services/bundle.service'
+import { BundleService } from '../../_services/bundle.service';
 import { ValidationService, AlertService, UserService, AuthenticationService } from '@app/_services';
 import { User } from '@app/_models';
 import { Subscription } from 'rxjs';
 
 @Component({templateUrl: 'perfil.component.html'})
 export class PerfilComponent implements OnInit {
-    currentUser:User;
+    currentUser: User;
     currentUserSubscription: Subscription;
     profileForm: FormGroup;
     loading = false;
@@ -17,11 +17,9 @@ export class PerfilComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private router: Router,
         private authenticationService: AuthenticationService,
-        private userService: UserService,
-        private alertService: AlertService,
-        private bundleService:BundleService,
+        private bundleService: BundleService,
+        private valid: ValidationService
     ) {
 
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
@@ -34,8 +32,14 @@ export class PerfilComponent implements OnInit {
     ngOnInit() {
         this.profileForm = this.formBuilder.group({
             nome: ['', Validators.required],
+            sobrenome: ['', Validators.required],
             password: ['', Validators.required],
+            fone: ['', [Validators.required,Validators.maxLength(11),Validators.minLength(11)]],
+        },
+        {
+            validator: ValidationService.MustMatch('password', 'sobrenome')
         });
+
 
         this.bundleService.AddScript('./assets/js/main.js');
     }
@@ -44,6 +48,7 @@ export class PerfilComponent implements OnInit {
     get f() { return this.profileForm.controls; }
 
     onSubmit() {
+        console.log(this.profileForm);
         this.submitted = true;
 
         // stop here if form is invalid
@@ -51,7 +56,7 @@ export class PerfilComponent implements OnInit {
             return;
         }
 
-        //this.loading = true;
+        // this.loading = true;
         // this.userService.register(this.profileForm.value)
         //     .pipe(first())
         //     .subscribe(

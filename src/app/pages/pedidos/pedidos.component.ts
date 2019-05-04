@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BundleService } from '@app/_services/bundle.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PedidosComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private bundleService: BundleService
+
+  ) { }
 
   ngOnInit() {
+    this.bundleService.AddScript('./assets/js/main.js');
   }
 
 }

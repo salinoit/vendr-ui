@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-breadcumb',
   templateUrl: './breadcumb.component.html',
@@ -18,11 +19,11 @@ export class BreadcumbComponent implements OnInit {
     // here route
   }
 
-  navigate(url:String):void {    
+  navigate(url:String):void {
         //this._route.navigate([url, {p1: this.property1, p2: property2 }]);
         // @RouteConfig([
         //   // ...
-        //   { path: '/SecondComponent/:p1:p2', name: 'SecondComponent', component: SecondComponent} 
+        //   { path: '/SecondComponent/:p1:p2', name: 'SecondComponent', component: SecondComponent}
         // )]
 
         this._route.navigate([url]);

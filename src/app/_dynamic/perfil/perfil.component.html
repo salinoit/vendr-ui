@@ -18,25 +18,44 @@
                                         <div class="form-group">
                                             <label for="emailad">{{currentUser.email}}</label>
                                         </div>
-                                        
+
                                         <div class="form-group">
                                             <input type="text" class="text_field" placeholder="Nome"
-                                            id="nome" formControlName="nome"                                     
+                                            id="nome" formControlName="nome"
                                             [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
-                                            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                                                 <control-messages [control]="profileForm.controls.nome"></control-messages>
-                                            </div>                                           
+                                            </div>
                                         </div>
-        
+
+                                         <div class="form-group">
+                                    <input type="text" class="text_field" placeholder="Sobrenome"
+                                    id="sobrenome" formControlName="sobrenome"
+                                    [ngClass]="{ 'is-invalid': submitted && f.sobrenome.errors }">
+                                    <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">
+                                        <control-messages [control]="profileForm.controls.sobrenome"></control-messages>
+                                   </div>
+
+                                </div>
+
+                                        <div class="form-group">
+                                          <input type="text" class="text_field" placeholder="Celular"
+                                          id="idfone" formControlName="fone"    mask="(00)00000-0000"
+                                          [ngClass]="{ 'is-invalid': submitted && f.fone.errors }">
+                                          <div *ngIf="submitted && f.fone.errors" class="invalid-feedback">
+                                              <control-messages [control]="profileForm.controls.fone"></control-messages>
+                                         </div>
+                                      </div>
+
                                         <div class="form-group">
                                             <input type="password" class="text_field" placeholder="Senha"
-                                            id="password" formControlName="password"                                     
+                                            id="password" formControlName="password"
                                             [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
-                                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">                                        
+                                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                                                 <control-messages [control]="profileForm.controls.password"></control-messages>
-                                           </div>                                           
+                                           </div>
                                         </div>
-        
+
 
                                     </div>
                                     <!-- end /.information_wrapper -->
@@ -46,7 +65,7 @@
                             <!-- end /.information_module -->
 
                             <div class="dashboard_setting_btn">
-                                <button [disabled]="loading" class="btn btn--md btn--round">SALVAR</button>
+                                <button [disabled]="loading"  class="btn btn--md btn--round">SALVAR</button>
                             </div>
                         </div>
                         <!-- end /.col-md-12 -->

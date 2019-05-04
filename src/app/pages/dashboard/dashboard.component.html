@@ -44,8 +44,10 @@
           <div class="row">
               <div class="col-md-12">
                   <h1 class="page-title">
-                      <a class="text-white" href="javascript:void(0)" *ngIf="_products">
-                          <img *ngIf="_vendedor" class="pull-left mr-4 avatar-vendedor" [src]="sanitizePicture(_vendedor.foto)" alt="Imagem Vendedor" width="100" >{{_vendedor.nome}}<br>
+                      <a class="text-white" href="javascript:void(0)" *ngIf="_products && _vendedorLido">
+                          <img *ngIf="_vendedorLido" class="pull-left mr-4 avatar-vendedor" [src]="sanitizePicture(_vendedor.foto)" alt="Imagem Vendedor" width="100" >
+                          {{_vendedor.nome}}
+                          <br>
                           <small *ngIf="_products.total>1" >{{_products.total + " itens"}} </small>
                           <small *ngIf="_products.total==1" >1 Item </small>
                           <small *ngIf="_products.total==0" >Nenhum item</small>
@@ -81,10 +83,13 @@
                           <div class="mainmenu__search p-0">
                               <form action="#">
                                   <div class="searc-wrap">
-                                      <input type="text" placeholder="Código ou nome do produto"  (input)="_searchInput($event.target.value)" >
-                                      <button type="submit" class="search-wrap__btn">
-                                          <span class="lnr lnr-magnifier"></span>
+                                      <input type="text" placeholder="Código ou nome do produto" value='{{_search}}' (input)="_searchInput($event.target.value)" >
+                                      <button *ngIf="_search==''" type="button" class="search-wrap__btn">
+                                          <span  class="lnr lnr-magnifier"></span>
                                       </button>
+                                      <button *ngIf="_search!=''" type="button" class="search-wrap__btn" (click)="clearFilter()">
+                                        <span  class="lnr lnr-cross"></span>
+                                    </button>
                                   </div>
                               </form>
                           </div>

@@ -1,16 +1,21 @@
 
-  <app-breadcumb title="Exemplo Produto" ></app-breadcumb>
+  <app-breadcumb *ngIf="product" title="{{product.Descricao}}" ></app-breadcumb>
 
   <!--============================================
       START SINGLE PRODUCT DESCRIPTION AREA
   ==============================================-->
   <section class="single-product-desc single-product-desc2">
+    <div *ngIf="!_product" class="panel panel-default " id="myoverlay" style="background-color: gray">
+      <div class="ringer ld ld-ring ld-spin">
+          </div>
+    </div>
+
       <div class="container" *ngIf="_product">
           <div class="row">
               <div class="col-lg-8">
                   <div class="item-preview item-preview2 mb-4 mb-lg-0">
                       <div class="prev-slide" >
-                          
+
                           <img *ngIf="_product.ImagemProduto" [src]="sanitizePicture(_product.ImagemProduto)" alt="{{_product.Descricao}}" width="100%" >
                           <img *ngIf="!_product.ImagemProduto" src="../../../assets/images/p2.jpg" alt="{{_product.Descricao}}"width="100%"  >
 
@@ -81,7 +86,7 @@
               <div class="col-lg-4">
                   <aside class="sidebar sidebar--single-product">
                       <div class="sidebar-card card-pricing">
-                          <div class="price">
+                          <div class="price" *ngIf="product">
                               <h1>
                                   <sup>R$</sup>
                                   <span>{{(_product.PrecoVenda | currencyformat:'BRL':true).replace("R$","")}}</span>
@@ -94,7 +99,7 @@
                           <!-- end /.purchase-button -->
                       </div>
                       <!-- end /.sidebar--card -->
-                    
+
                       <div class="sidebar-card card-pricing card--pricing2">
                           <div class="price">
                               <h1>
@@ -215,7 +220,7 @@
                   <!-- end /.single-product -->
               </div>
               <!-- end /.col-md-3 -->
-            
+
               <!-- start .col-md-3 -->
               <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
                   <!-- start .single-product -->
@@ -248,7 +253,7 @@
                   <!-- end /.single-product -->
               </div>
               <!-- end /.col-md-3 -->
-            
+
               <!-- start .col-md-3 -->
               <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
                   <!-- start .single-product -->
@@ -281,7 +286,7 @@
                   <!-- end /.single-product -->
               </div>
               <!-- end /.col-md-3 -->
-            
+
               <!-- start .col-md-3 -->
               <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
                   <!-- start .single-product -->

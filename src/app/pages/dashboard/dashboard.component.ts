@@ -5,8 +5,9 @@ import { Subject, Subscriber, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Product, ProductPage, User, Vendedor } from '@app/_models';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+
 
 
 declare var CloseModalVendedor: any;
@@ -27,7 +28,8 @@ export class DashboardComponent implements OnInit {
     private cartService: CartService,
     private route: ActivatedRoute,
     private location: Location,
-    private vendedorService:VendedorService
+    private vendedorService:VendedorService,
+    private router: Router
   ) {}
 
   currentUser: User;
@@ -35,25 +37,12 @@ export class DashboardComponent implements OnInit {
   _vendedores: [];
   _search = '';
   _searchTherm: Subject<string> = new Subject();
-  _products: ProductPage;  
+  _products: ProductPage;
   _currentUserSubscription: Subscription;
+  _vendedorLido = false;
   loading = false;
 
 
-  _idvendedor:number;
-  initializeVendedor(): void { //apenas para exibir os detalhes do vendedor
-
-    this.route.queryParams.subscribe(params => {
-       this._idvendedor=params['id'];
-      if (this._idvendedor) {
-        this.vendedorService.getById(this._idvendedor)
-        .subscribe(vend => {
-          this._vendedor = vend;
-          console.log(vend);
-          });
-     }
-    });
-  }
 
 
   // pager object
@@ -121,9 +110,45 @@ export class DashboardComponent implements OnInit {
   }
 
 
+  _idvendedor: string;
+  initializeVendedor(): void { //apenas para exibir os detalhes do vendedor
+    this.vendedorService.getById(parseInt(this._idvendedor))
+    .subscribe(vend => {
+      this._vendedor = vend;
+      //console.log(vend);
+      this._vendedorLido=true;
+      });
+
+  }
 
   ngOnInit() {
-    this.initializeVendedor();
+    this.route.queryParams.subscribe(params => {
+     if (params['id']) {
+       const id = params['id'];
+       this._idvendedor=id;
+
+       localStorage.setItem('vendedor',id);
+
+       this.router.navigate(['/dashboard']);
+       this.initializeVendedor();
+     }
+     else
+     {
+       var id=localStorage.getItem('vendedor');
+
+       if (id) {
+        this._idvendedor=id;
+        //console.log('captei:' + id);
+       }
+       else
+       {
+         this._idvendedor="0";
+       }
+       this.initializeVendedor();
+     }
+     this.loadData();
+    });
+
 
     this._searchTherm.pipe(debounceTime(1200),distinctUntilChanged()).subscribe(
       value=>{ this._search=value; console.log('pesquisando por: ' + value); this.loadData(); }
@@ -133,7 +158,7 @@ export class DashboardComponent implements OnInit {
   this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   this._currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
-      this.loadData();
+
     });
 
 
@@ -143,13 +168,12 @@ export class DashboardComponent implements OnInit {
   setPage(page: number) {
 
     var vend=0;
-    this.route.queryParams.subscribe(params => {
-      vend=params['id'];
-      if (!vend) vend=0;
-    });
+    if (parseInt(this._idvendedor)>0) {
+      vend=parseInt(this._idvendedor);
+    }
 
     this.loading=true;
-    this.productService.getPaged(page,this.itensPerPage,this._search,vend).subscribe(prod=>{
+    this.productService.getPaged(page,this.itensPerPage,this._search,vend,this.itensOrder).subscribe(prod=>{
       this._products=prod;
       this.loading=false;
       // get pager object from service
@@ -199,8 +223,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
+  clearFilter()
+  {
+    this._search='';
+    this._searchTherm.next('');
+  }
   sanitizePicture(vr){
-    return this.imageUtil.sanitizePicture(vr, '../../../assets/images/p2.jpg');
+    return this.imageUtil.sanitizePicture(vr);
   }
 }

@@ -12,8 +12,8 @@ export class ProductService {
         return this.http.get<Product[]>(`${environment.apiUrl}/produto`);
     }
 
-    getPaged(page:number,size:number,search:string,vendedor:number ) { //vendedor 0 = todos
-        return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}&vendedor=${vendedor}`);
+    getPaged(page:number,size:number,search:string,vendedor:number,orderby:number ) { //vendedor 0 = todos
+        return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}&vendedor=${vendedor}&order=${orderby}`);
     }
 
     getById(id: number) {
