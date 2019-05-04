@@ -26,7 +26,7 @@ import { PiperModule } from './_pipes/currencyPipe';
 import { SharedModule } from '@app/shared.module';
 
 //OTHERS
-import { AlertComponent } from './_components/alert.component';
+
 import { TopSearchComponent } from './_components/top-search/top-search.component';
 import { FooterComponent } from './footer/footer.component';
 
@@ -45,7 +45,7 @@ import { PedidoComponent,
 @NgModule({
   declarations: [
     BlankComponent,C404Component,DashboardComponent,
-    ForgotComponent,RegisterComponent,AlertComponent,
+    ForgotComponent,RegisterComponent,
     TopSearchComponent,FooterComponent,LoginComponent,
     VendedorComponent, PedidosComponent, PedidoComponent,
     ProdutoComponent, CheckoutComponent,

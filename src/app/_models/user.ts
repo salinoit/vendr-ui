@@ -1,11 +1,17 @@
-import { Vendedor } from './vendedor';
 
 export class User {
-    id: number;
-    nome: string;
-    senha: string;
-    celular: string;
-    foto: string;
+    id_usuario: number;
+    id_perfil: number;
     email: string;
-    token: string;    
+    senha: string;
+    nome: string;
+    fone: string;
+    foto: string;
+    endereco: string;
+    endereco_bairro: string;
+    endereco_numero: string;
+    estado: string;
+    cep: string;
+    cidade: string;
+    ativo: boolean;
 }

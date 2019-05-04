@@ -24,9 +24,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
-                    
+
                     <form (ngSubmit)="onSubmit()" id="registerForm" class="user" [formGroup]="registerForm">
-                       
+
                         <div class="cardify signup_form" style="padding-top: 30px;">
                                 <div class='col-md-12'>
                                         <alert></alert>
@@ -40,63 +40,54 @@
                             </div>
                             <!-- end .login_header -->
 
-                            <div class="login--form">                                                               
+                            <div class="login--form">
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="Nome"
-                                    id="nome" formControlName="nome"                                     
+                                    id="nome" formControlName="nome"
                                     [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
-                                    <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                                         <control-messages [control]="registerForm.controls.nome"></control-messages>
                                    </div>
-                                   
+
                                 </div>
 
-                                 <div class="form-group">
-                                    <input type="text" class="text_field" placeholder="Sobrenome"
-                                    id="sobrenome" formControlName="sobrenome"                                     
-                                    [ngClass]="{ 'is-invalid': submitted && f.sobrenome.errors }">
-                                    <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">                                        
-                                        <control-messages [control]="registerForm.controls.sobrenome"></control-messages>
-                                   </div>
-                                   
-                                </div>
-                                
+
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="email"
-                                    id="email" formControlName="email"                                     
+                                    id="email" formControlName="email"
                                     [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
-                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                                         <control-messages [control]="registerForm.controls.email"></control-messages>
                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="celular"
-                                    id="celular" formControlName="celular"    mask="(00)00000-0000"                                  
+                                    id="celular" formControlName="celular"    mask="(00)00000-0000"
                                     [ngClass]="{ 'is-invalid': submitted && f.celular.errors }">
-                                    <div *ngIf="submitted && f.celular.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.celular.errors" class="invalid-feedback">
                                         <control-messages [control]="registerForm.controls.celular"></control-messages>
                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="Senha"
-                                    id="password" formControlName="password"                                     
+                                    id="password" formControlName="password"
                                     [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
-                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                                         <control-messages [control]="registerForm.controls.password"></control-messages>
                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="Confirme a Senha"
-                                    id="password2" formControlName="password2"                                      
+                                    id="password2" formControlName="password2"
                                     [ngClass]="{ 'is-invalid': submitted && f.password2.errors }">
-                                    <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
                                         <control-messages [control]="registerForm.controls.password2"></control-messages>
                                    </div>
 
-                                </div> 
+                                </div>
 
                                 <div class="form-group text-center">
                                     <button [disabled]="loading" class="btn btn--md btn--round">CADASTRAR</button>
@@ -107,7 +98,7 @@
                                         <a routerLink="/login">Faça Login.</a>
                                     </p>
                                 </div>
-                                                                
+
                             </div>
                             <!-- end .login--form -->
                         </div>
@@ -125,7 +116,7 @@
     =================================-->
 
 <app-footer></app-footer>
-   
+
 </body>
 
 </html>

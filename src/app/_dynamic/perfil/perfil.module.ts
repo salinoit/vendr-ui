@@ -16,7 +16,7 @@ import { ValidationService,BundleService,AlertService,AuthenticationService,User
   imports: [
     SharedModule,
     routing,
-    FormsModule,ReactiveFormsModule,
+    // FormsModule,ReactiveFormsModule,
   ],
   providers: [
 

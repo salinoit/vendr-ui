@@ -27,8 +27,19 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   userAvatar;
 
 
-  profilePicture(vr){
-    this.userAvatar= this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + vr);
+  profilePicture(vr)
+  {
+    if (vr) {
+      var gh='';
+      if(vr.indexOf('data:image')<0)
+      {
+          gh='data:image/png;base64,';
+      }
+      this.userAvatar = this.sanitizer.bypassSecurityTrustUrl(gh + vr);
+    } else
+    {
+       this.userAvatar = '../../../assets/images/user.png';
+    }
   }
 
 
@@ -46,12 +57,7 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.authenticationService.currentUser.subscribe(x => {
-      try {
-        if (x.foto && x.foto!=''){
-          this.profilePicture(x.foto);
-        }
-      }
-      catch {}
+      this.profilePicture(x.foto);
       this.currentUser = x;
 
     });

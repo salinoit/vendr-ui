@@ -45,7 +45,7 @@
                                         <div class="product__additional_info">
                                             <ul>
                                                 <li>
-                                                    <input class="w-50" type="number" value="{{item.qtd}}"
+                                                    <input class="w-50" type="number" min='1' value="{{item.qtd}}"
                                                     [(ngModel)]="item.qtd"
                                                     [ngModelOptions]="{ standalone: true }" (change)="_qtyChange()">
                                                 </li>

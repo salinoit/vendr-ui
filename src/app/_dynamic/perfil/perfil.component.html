@@ -12,13 +12,20 @@
                                 <a class="toggle_title">
                                     <h4>Editar perfil</h4>
                                 </a>
+                                <div class='col-md-12'>
+                                  <alert></alert>
+                                </div>
 
                                 <div class="information__set toggle_module">
                                     <div class="information_wrapper form--fields">
                                         <div class="form-group">
                                             <label for="emailad">{{currentUser.email}}</label>
                                         </div>
+                                        <div class="form-group">
+                                            <input #file type="file" accept='image/*' (change)="preview(file.files)" style="display: none"/>
 
+                                          <img [src]="userAvatar" style="max-height: 80px; cursor: pointer" *ngIf="userAvatar" (click)="file.click()" />
+                                        </div>
                                         <div class="form-group">
                                             <input type="text" class="text_field" placeholder="Nome"
                                             id="nome" formControlName="nome"
@@ -27,16 +34,6 @@
                                                 <control-messages [control]="profileForm.controls.nome"></control-messages>
                                             </div>
                                         </div>
-
-                                         <div class="form-group">
-                                    <input type="text" class="text_field" placeholder="Sobrenome"
-                                    id="sobrenome" formControlName="sobrenome"
-                                    [ngClass]="{ 'is-invalid': submitted && f.sobrenome.errors }">
-                                    <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">
-                                        <control-messages [control]="profileForm.controls.sobrenome"></control-messages>
-                                   </div>
-
-                                </div>
 
                                         <div class="form-group">
                                           <input type="text" class="text_field" placeholder="Celular"
@@ -55,6 +52,18 @@
                                                 <control-messages [control]="profileForm.controls.password"></control-messages>
                                            </div>
                                         </div>
+
+
+                                        <div class="form-group">
+                                          <input type="password" class="text_field" placeholder="Confirme a Senha"
+                                          id="password2" formControlName="password2"
+                                          [ngClass]="{ 'is-invalid': submitted && f.password2.errors }">
+                                          <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
+                                              <control-messages [control]="profileForm.controls.password2"></control-messages>
+                                         </div>
+
+                                      </div>
+
 
 
                                     </div>

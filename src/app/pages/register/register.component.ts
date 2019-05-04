@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { BundleService } from '../../_services/bundle.service'
+import { BundleService } from '@app/_services/bundle.service';
+import { User } from '@app/_models';
 import { ValidationService, AlertService, UserService, AuthenticationService } from '@app/_services';
 
 @Component({templateUrl: 'register.component.html'})
@@ -17,10 +18,10 @@ export class RegisterComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private userService: UserService,
         private alertService: AlertService,
-        private bundleService:BundleService,
-    ) { 
+        private bundleService: BundleService,
+    ) {
         // REDIRECIONAR PARA A HOME SE JA ESTIVER LOGADO
-        if (this.authenticationService.currentUserValue) { 
+        if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/']);
         }
     }
@@ -32,11 +33,12 @@ export class RegisterComponent implements OnInit {
             celular: ['', [Validators.required,Validators.maxLength(11),Validators.minLength(11)]],
             password: ['', [Validators.required, Validators.minLength(6)]],
             password2: ['',[Validators.required, Validators.minLength(6)]]
-        },
+        }
+        ,
         {
             validator:ValidationService.MustMatch('password', 'password2')
         });
-        
+
         this.bundleService.AddScript('./assets/js/main.js');
     }
 
@@ -51,13 +53,32 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
+        let user = new User();
+        user.email = this.registerForm.get('email').value;
+        user.nome = this.registerForm.get('nome').value;
+        user.fone = this.registerForm.get('celular').value;
+        user.senha = this.registerForm.get('password').value;
+
         this.loading = true;
-        this.userService.register(this.registerForm.value)
+        this.userService.register(user)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
+                  console.log(data);
+                  if (data == 'OK') {
+                    this.alertService.success('Registro efetuado com sucesso', true);
                     this.router.navigate(['/login']);
+                  }
+                  else if (data == 'EXIST')
+                  {
+                    this.alertService.success('Já existe um cadastro com este e-mail', true);
+                    this.loading = false;
+                  }
+                  else
+                  {
+                    this.alertService.success('Usuário já cadastrado!', true);
+                    this.loading = false;
+                  }
                 },
                 error => {
                     this.alertService.error(error);

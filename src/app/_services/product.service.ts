@@ -13,6 +13,7 @@ export class ProductService {
     }
 
     getPaged(page:number,size:number,search:string,vendedor:number,orderby:number ) { //vendedor 0 = todos
+      console.log(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}&vendedor=${vendedor}&order=${orderby}`);
         return this.http.get<ProductPage>(`${environment.apiUrl}/produto/paged/${page}/${size}?search=${search}&vendedor=${vendedor}&order=${orderby}`);
     }
 
@@ -20,17 +21,8 @@ export class ProductService {
         return this.http.get<Product>(`${environment.apiUrl}/produto/${id}`);
     }
 
-    register(user: User) {
-        return this.http.post(`${environment.apiUrl}/users/register`, user);
-    }
 
-    update(user: User) {
-        return this.http.put(`${environment.apiUrl}/users/${user.id}`, user);
-    }
 
-    delete(id: number) {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`);
-    }
 
 
 }

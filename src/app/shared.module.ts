@@ -5,18 +5,19 @@ import { InputComponent } from '@app/_components/input/input.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AlertComponent } from '@app/_components/alert.component';
 
 import {NgxMaskModule} from 'ngx-mask';
 
 @NgModule({
   declarations: [
-    BreadcumbComponent,ControlMessagesComponent,InputComponent
+    BreadcumbComponent,ControlMessagesComponent,InputComponent, AlertComponent
   ],
   imports: [
     FormsModule, ReactiveFormsModule,  CommonModule, NgxMaskModule.forRoot()
   ],
   providers: [
   ],
-  exports:[ BreadcumbComponent, ControlMessagesComponent, InputComponent, FormsModule, ReactiveFormsModule,  CommonModule, NgxMaskModule]
+  exports:[ BreadcumbComponent, ControlMessagesComponent, InputComponent, FormsModule, ReactiveFormsModule,  CommonModule, NgxMaskModule, AlertComponent]
 })
 export class SharedModule { }
