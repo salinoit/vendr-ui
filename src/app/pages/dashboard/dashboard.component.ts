@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { VendedorService, CartService, ProductService, BundleService,PagerService,AuthenticationService } from '@app/_services';
 import { ImageUtilService } from '@app/_helpers';
 import { Subject, Subscriber, Observable, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+
 import { Product, ProductPage, User, Vendedor } from '@app/_models';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Router,ActivatedRoute } from '@angular/router';
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
     private cartService: CartService,
     private route: ActivatedRoute,
     private location: Location,
-    private vendedorService:VendedorService,
+    private vendedorService: VendedorService,
     private router: Router
   ) {}
 
@@ -108,17 +108,16 @@ export class DashboardComponent implements OnInit {
   _searchInput(filterVal: any) {
     this._searchTherm.next(filterVal);
   }
-
-
   _idvendedor: string;
   initializeVendedor(): void { //apenas para exibir os detalhes do vendedor
+    if (parseInt(this._idvendedor)>0) {
     this.vendedorService.getById(parseInt(this._idvendedor))
     .subscribe(vend => {
       this._vendedor = vend;
       //console.log(vend);
       this._vendedorLido=true;
       });
-
+    }
   }
 
   ngOnInit() {

@@ -5,7 +5,7 @@ import { InputComponent } from '@app/_components/input/input.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AlertComponent } from '@app/_components/alert.component';
+import { AlertComponent } from '@app/_components/alert-service/alert.component';
 
 import {NgxMaskModule} from 'ngx-mask';
 

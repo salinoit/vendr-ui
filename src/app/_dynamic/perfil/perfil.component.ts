@@ -100,7 +100,9 @@ export class PerfilComponent implements OnInit {
         user.fone = this.profileForm.get('fone').value;
         user.senha = this.profileForm.get('password').value;
         if (this.userAvatar){
-          user.foto = this.userAvatar;
+          if (this.userAvatar.indexOf('../')<0) {
+            user.foto = this.userAvatar;
+          }
         }
 
         this.loading = false;

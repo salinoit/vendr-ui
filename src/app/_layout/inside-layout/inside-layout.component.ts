@@ -57,9 +57,10 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     this.authenticationService.currentUser.subscribe(x => {
+      if (x) {
       this.profilePicture(x.foto);
       this.currentUser = x;
-
+      }
     });
 
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {

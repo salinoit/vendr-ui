@@ -20,9 +20,20 @@ export class ImageUtilService {
   }
   sanitizePicture(vr){
     if (vr) {
-      //if (this.isBase64(vr)) {
       if (vr.length>200) {
-        return this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + vr);
+        var gh='';
+        if(vr.indexOf('data:image')<0 && vr.indexOf('http:')<0)
+        {
+            gh='data:image/png;base64,';
+            return this.sanitizer.bypassSecurityTrustUrl(gh + vr);
+        }
+        else
+        {
+          if (vr.indexOf('http:')>0)
+          {
+            return vr;
+          }
+        }
       } else
       {
         return '../../../assets/images/p2.jpg';

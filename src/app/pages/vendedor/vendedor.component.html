@@ -8,14 +8,14 @@
                 <div class="breadcrumb">
                     <ul>
                         <li>
-                            <a href="dashboard.html">Home</a>
+                            <a routerLink='/dashboard'>Home</a>
                         </li>
                         <li>
-                            <a class="d-block d-sm-none" href="vendedor.html">Nome Vendedor</a>
+                            <a *ngIf='_vendedor' class="d-block d-sm-none" href="javascript:void(0)">{{_vendedor.nome}}</a>
                         </li>
                     </ul>
                 </div>
-                <h1 class="d-none d-sm-block page-title pt-md-2 pt-lg-3">Nome Vendedor</h1>
+                <h1 *ngIf='_vendedor' class="d-none d-sm-block page-title pt-md-2 pt-lg-3">{{_vendedor.nome}}</h1>
             </div>
             <!-- end /.col-md-12 -->
         </div>
@@ -39,16 +39,16 @@
                     <div class="author-card sidebar-card mb-4 mb-lg-0">
                         <div class="author-infos">
                             <div class="author_avatar">
-                                <img src="../../../assets/images/avatar-vendedor.jpg" alt="Imagem Vendedor">
+                                <img *ngIf="_vendedor" [src]="vendedorAvatar" alt="{{_vendedor.nome}}">
                             </div>
 
-                            <div class="author">
-                                <h4>Nome Vendedor</h4>
+                            <div class="author" *ngIf="_vendedor">
+                                <h4>{{_vendedor.nome}}</h4>
                                 <p>Desde: 11/03/2019</p>
                                 <p>570 itens</p>
                                 <hr>
                                 <p>CPF/CNPJ</p>
-                                <p><a href="mailto:email@exemplo.com">E-mail</a></p>
+                                <p><a href="mailto:{{_vendedor.email}}">{{_vendedor.email}}</a></p>
                                 <p>CEP</p>
                                 <p>Endereço, número</p>
                                 <p>Cidade/Estado</p>
@@ -114,9 +114,9 @@
                 <div class="row">
 
                     <div class="col-md-12 col-sm-12">
-                        <div class="author_module about_author">
+                        <div class="author_module about_author" *ngIf="_vendedor">
                             <h2>Sobre
-                                <span>Nome Vendedor</span>
+                                <span>{{_vendedor.nome}}</span>
                             </h2>
                             <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
                                 quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo

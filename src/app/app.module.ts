@@ -1,6 +1,7 @@
 // COMMON
 
 import { NgModule, Renderer2 } from '@angular/core';
+
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -18,8 +19,6 @@ import { fakeBackendProvider, JwtInterceptor, ErrorInterceptor } from './_helper
 // SERVICES
 import { ValidationService,BundleService,AlertService,AuthenticationService,UserService } from '@app/_services';
 
-//COMPONENT LAYOUT
-import { MasterComponent } from './_layout/master/master.component';
 
 
 import { PiperModule } from './_pipes/currencyPipe';
@@ -27,7 +26,6 @@ import { SharedModule } from '@app/shared.module';
 
 //OTHERS
 
-import { TopSearchComponent } from './_components/top-search/top-search.component';
 import { FooterComponent } from './footer/footer.component';
 
 
@@ -46,10 +44,10 @@ import { PedidoComponent,
   declarations: [
     BlankComponent,C404Component,DashboardComponent,
     ForgotComponent,RegisterComponent,
-    TopSearchComponent,FooterComponent,LoginComponent,
+    FooterComponent,LoginComponent,
     VendedorComponent, PedidosComponent, PedidoComponent,
     ProdutoComponent, CheckoutComponent,
-    AppComponent,MasterComponent,InsideLayoutComponent
+    AppComponent,InsideLayoutComponent
 
   ],
   imports: [
@@ -63,8 +61,8 @@ import { PedidoComponent,
   providers: [
     ValidationService,
     BundleService,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     //fakeBackendProvider
   ],
   bootstrap: [AppComponent]

@@ -5,6 +5,7 @@ import { first,distinctUntilChanged } from 'rxjs/operators';
 import { CepService,BundleService } from '@app/_services'
 import { ValidationService, AlertService, UserService, AuthenticationService } from '@app/_services';
 import { Cep } from '@app/_models/cep';
+import { User } from '@app/_models/';
 
 @Component({
   selector: 'app-checkout',
@@ -16,7 +17,7 @@ export class CheckoutComponent implements OnInit {
   loading = false;
   submitted = false;
   cep=new Cep();
-  
+
 
   constructor(
       private formBuilder: FormBuilder,
@@ -26,21 +27,23 @@ export class CheckoutComponent implements OnInit {
       private alertService: AlertService,
       private bundleService:BundleService,
       private cepService:CepService
-  ) { 
+  ) {
       // // REDIRECIONAR PARA A HOME SE JA ESTIVER LOGADO
-      // if (this.authenticationService.currentUserValue) { 
+      // if (this.authenticationService.currentUserValue) {
       //     this.router.navigate(['/']);
       // }
-      
+
   }
 
   ngOnInit() {
+    var user = JSON.parse(localStorage.getItem('currentUser')) as User;
+
       this.checkoutForm = this.formBuilder.group({
-          nome: ['', Validators.required],
+          nome: [user.nome, Validators.required],
           sobrenome: ['', Validators.required],
-          email: ['', [Validators.required,ValidationService.emailValidator]],
-          telefone: ['', [Validators.required,Validators.maxLength(11),Validators.minLength(11)]],
-          cep: ['', [Validators.required,Validators.maxLength(8),Validators.minLength(8)]],          
+          email: [user.email, [Validators.required,ValidationService.emailValidator]],
+          telefone: [user.fone, [Validators.required,Validators.maxLength(11),Validators.minLength(11)]],
+          cep: ['', [Validators.required,Validators.maxLength(8),Validators.minLength(8)]],
           endereco: ['', Validators.required],
           formapagto:['boleto',Validators.required],
           cartao:['5180271171683285', [ValidationService.creditCardValidator]],
@@ -48,11 +51,11 @@ export class CheckoutComponent implements OnInit {
           // cidade: ['', Validators.required],
           // estado: ['', Validators.required],
       },
-      { 
-          
+      {
+
       });
       this.addExtendValidation();
-      
+
       this.bundleService.AddScript('./assets/js/main.js');
   }
 
@@ -61,30 +64,30 @@ export class CheckoutComponent implements OnInit {
     {
       alert(2);
       console.log(this.cepService.resultado);
-    }            
+    }
   }
 
   addExtendValidation() {
     const formaPagto = this.checkoutForm.get('formapagto');
-    const cartao = this.checkoutForm.get('cartao');    
-    
+    const cartao = this.checkoutForm.get('cartao');
 
-    this.checkoutForm.get('formapagto').valueChanges.pipe(distinctUntilChanged())   
-      .subscribe(userCategory => {                
+
+    this.checkoutForm.get('formapagto').valueChanges.pipe(distinctUntilChanged())
+      .subscribe(userCategory => {
         cartao.clearValidators();
-        
 
-        if (userCategory == 'credito') {             
+
+        if (userCategory == 'credito') {
           cartao.setValidators([Validators.required,ValidationService.creditCardValidator]);
         }
 
-        if (userCategory == 'boleto') {          
+        if (userCategory == 'boleto') {
           cartao.setValidators(null);
         }
 
         formaPagto.updateValueAndValidity();
-        cartao.updateValueAndValidity();        
-        
+        cartao.updateValueAndValidity();
+
       });
   }
 
@@ -98,12 +101,12 @@ export class CheckoutComponent implements OnInit {
       this.submitted = true;
 
       // stop here if form is invalid
-      if (this.checkoutForm.invalid) {        
+      if (this.checkoutForm.invalid) {
           return;
       }
 
       this.loading = true;
-      this.router.navigate(['/login']); 
+      this.router.navigate(['/login']);
       // this.userService.register(this.checkoutForm.value)
       //     .pipe(first())
       //     .subscribe(

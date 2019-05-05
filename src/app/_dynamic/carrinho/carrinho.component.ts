@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CartService,BundleService,UserService,AuthenticationService } from '@app/_services';
 import { ImageUtilService } from '@app/_helpers';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-carrinho',
@@ -17,14 +18,25 @@ export class CarrinhoComponent implements OnInit {
 
   constructor(
       private cartService: CartService,
-      private imageUtil: ImageUtilService
+      private imageUtil: ImageUtilService,
+      private router: Router,
   ) { }
 
   ngOnInit() {
     this.currentCart = new Cart();
     this.currentCartSubscription = this.cartService.currentCart.subscribe(ccc => {
       this.currentCart = ccc;
-//      this.loading=false;
+
+      try {
+      if (!ccc.items){
+        this.router.navigate(['/dashboard']);
+      }
+      }
+      catch(e)
+      {
+        this.router.navigate(['/dashboard']);
+      }
+
     });
 
     this.loading = false;

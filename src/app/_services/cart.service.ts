@@ -4,6 +4,7 @@ import { Cart, CartItem, PreloadCart, PreloadCartItem } from '@app/_models/cart'
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -31,9 +32,10 @@ export class CartService {
 
    ProcessServerCart(sr: PreloadCart) {
     if (sr) {
-
       this.http.post<Cart>(`${environment.apiUrl}/cart/`, sr).subscribe(carr=>{
+
         this.currentCartSubject.next(carr);
+
         const newState = new PreloadCart();
         newState.existentes = [];
         newState.novo = new PreloadCartItem();
@@ -41,7 +43,9 @@ export class CartService {
         for (var i of carr.items){
           newState.existentes.push({id:i.produto.IdProdutoServico,qtd:i.qtd});
         }
+
         localStorage.setItem('Cart', JSON.stringify(newState));
+
       });
     }
   }
