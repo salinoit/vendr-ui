@@ -10,14 +10,3 @@ export class CartItem {
   qtd: number;
   produto: Product;
 }
-
-export class PreloadCart
-{
-    existentes:PreloadCartItem[];
-    novo:PreloadCartItem;
-}
-export class PreloadCartItem
-{
-    id:number;
-    qtd:number;
-}

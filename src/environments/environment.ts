@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl:'http://localhost/api/api'
-  //apiUrl: 'http://localhost:4000'
+  apiUrl:'http://localhost/api/api',
+  publicZaptPay:'v1',
+  privateZaptPay:'vendr1'
 };
 
 /*

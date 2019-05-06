@@ -32,13 +32,13 @@
                               <div class="d-md-none" style="position: relative; top: 19px;">
                                   <a class="btn-carrinho" routerLink="/carrinho">
                                       <span class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span>
-                                      <span *ngIf="currentCart" class="d-none d-md-inline-block">{{currentCart.total | currencyformat:'BRL':true }}</span>
+                                      <span *ngIf="tagVisible()" class="d-none d-md-inline-block">{{currentCart.total | currencyformat:'BRL':true }}</span>
                                   </a>
                                   <span class="notification_count purch">2</span>
                               </div>
 
                               <ul class="d-none d-md-inline-block">
-                                  <li class="has_dropdown" *ngIf="currentCart">
+                                  <li class="has_dropdown" *ngIf="tagVisible()">
                                       <div class="icon_wrap">
                                           <span style="background: rgba(6, 116, 236, 0.1);
                                             color: #16a085;
@@ -48,13 +48,13 @@
                                             border-radius: 200px;
                                             margin-top: 10px;
                                             font-weight: 500;">
-                                        <span *ngIf="currentCart" class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span>
+                                        <span *ngIf="tagVisible()" class="lnr lnr-cart" style="position: relative; top: -2.5px; margin-right: 5px;"></span>
                                               <span>{{getTotalCart()}}</span>
                                           </span>
-                                          <span *ngIf="currentCart" class="notification_count purch">{{currentCart.items.length}}</span>
+                                          <span *ngIf="tagVisible()" class="notification_count purch">{{currentCart.items.length}}</span>
                                       </div>
 
-                                      <div class="dropdown dropdown--cart d-none d-md-block" *ngIf="currentCart && currentCart.items.length>0">
+                                      <div class="dropdown dropdown--cart d-none d-md-block" *ngIf="tagVisible()">
                                           <div class="cart_area">
                                               <div class="cart_product" *ngFor="let item of currentCart.items | slice:0:3; let i=index">
 
@@ -78,7 +78,7 @@
                                                       </p>
                                                   </div>
                                               </div>
-                                              <div class="total" *ngIf="currentCart">
+                                              <div class="total" *ngIf="tagVisible()">
                                                   <p class="m-0">
                                                       <span>Total :</span>{{currentCart.total | currencyformat:'BRL':true }}</p>
                                               </div>

@@ -1,6 +1,6 @@
 import { Injectable, APP_INITIALIZER } from '@angular/core';
 import { Product } from '@app/_models/product';
-import { Cart, CartItem, PreloadCart, PreloadCartItem } from '@app/_models/cart';
+import { Cart, CartItem,  } from '@app/_models/cart';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
@@ -8,101 +8,119 @@ import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-   private sendData: Observable<PreloadCart>;
-   private sendDataSubject: BehaviorSubject<PreloadCart>;
 
-   currentCart: Observable<Cart>;
-   private currentCartSubject: BehaviorSubject<Cart>;
+   private currentCart: Cart;
+
+   currentCartSubject: BehaviorSubject<Cart>;
+
+   inProcess: boolean;
+
+   buffer: Product[];
+
+   public get currentCartValue(): Cart {
+    return this.currentCartSubject.value;
+  }
 
    constructor(
      private http: HttpClient
     ) {
-      this.sendDataSubject = new BehaviorSubject<PreloadCart>(JSON.parse(localStorage.getItem('Cart')));
-      this.sendData = this.sendDataSubject.asObservable();
+      this.buffer = [];
+      this.inProcess = false;
 
-      this.currentCartSubject = new BehaviorSubject<Cart>(JSON.parse(localStorage.getItem('CartFix!')));
-      this.currentCart = this.currentCartSubject.asObservable();
+      this.currentCartSubject = new BehaviorSubject<Cart>(JSON.parse(localStorage.getItem('currentCart')) as Cart);
+      //this.currentCart = this.currentCartSubject.asObservable();
 
-      this.sendData.subscribe(sd => {
-        this.ProcessServerCart(sd);
-       });
+      //this.currentCartSubject = new BehaviorSubject<Cart>(new Cart());
+      this.currentCartSubject.subscribe(p => {
 
-       //this.sendDataSubject.subscribe(p=>console.log(p));
-   }
-
-   ProcessServerCart(sr: PreloadCart) {
-    if (sr) {
-      this.http.post<Cart>(`${environment.apiUrl}/cart/`, sr).subscribe(carr=>{
-
-        this.currentCartSubject.next(carr);
-
-        const newState = new PreloadCart();
-        newState.existentes = [];
-        newState.novo = new PreloadCartItem();
-
-        for (var i of carr.items){
-          newState.existentes.push({id:i.produto.IdProdutoServico,qtd:i.qtd});
+        if (p == null) {
+          p = new Cart();
+          p.total=0;
+          p.items=[];
         }
 
-        localStorage.setItem('Cart', JSON.stringify(newState));
-
+        this.currentCart = p;
+        console.log('new cart arrive');
+        console.log(p);
       });
+   }
+
+   SendToServer()
+   {
+     if (this.buffer.length > 0){
+        this.inProcess =  true;
+
+        const p = this.buffer[0];
+
+        var novoItem = new CartItem();
+          novoItem.qtd = 1;
+          novoItem.produto = p;
+
+        var localCart = JSON.parse(localStorage.getItem('currentCart')) as Cart;
+        if (localCart)
+        {
+          localCart.items.push(novoItem);
+        } else
+        {
+          localCart = new Cart();
+          localCart.total = 0;
+          localCart.items = [];
+          localCart.items.push(novoItem);
+        }
+
+        this.http.post<Cart>(`${environment.apiUrl}/cart/`, localCart).subscribe(carr=>{
+          this.buffer.splice(0,1);
+          this.currentCartSubject.next(carr);
+          localStorage.setItem('currentCart', JSON.stringify(carr));
+          if (this.buffer.length > 0)
+          {
+            this.SendToServer();
+          } else
+          {
+            this.inProcess = false;
+          }
+        });
+
     }
   }
 
-  public get currentCartValue(): Cart {
-  return this.currentCartSubject.value;
-  }
-  public get currentPreloadValue(): PreloadCart {
-  return this.sendDataSubject.value;
-  }
 
-  ReloadCart()
+
+  ReloadCart(cart: Cart)
   {
-    const c = new PreloadCart();
-    c.existentes = [];
-    for (let n of this.currentCartValue.items)
-    {
-        c.existentes.push({id:n.produto.IdProdutoServico,qtd:n.qtd});
-    }
-    this.ProcessServerCart(c);
+    this.http.post<Cart>(`${environment.apiUrl}/cart/`, cart).subscribe(carr=>{
+      this.currentCartSubject.next(carr);
+      localStorage.setItem('currentCart', JSON.stringify(carr));
+    });
   }
+
   Delete(id)
   {
-    let carr = JSON.parse(localStorage.getItem('Cart')) as PreloadCart;
+    let carr = JSON.parse(localStorage.getItem('currentCart')) as Cart;
     let index=0;
-    for (let x of carr.existentes)
+    for (let x of carr.items)
     {
-      if (x.id==id)
+      if (x.produto.IdProdutoServico == id)
       {
         break;
       }
       index++;
     }
-
-    carr.existentes.splice(index,1);
-    this.sendDataSubject.next(carr);
-
+    carr.items.splice(index,1);
+    this.ReloadCart(carr);
   }
 
   public Clear(): void
   {
 
   }
-  public InsertCart(novo: PreloadCartItem): void {
 
-			if (localStorage.getItem('Cart') == null) {
-          //do nothing
-          let cartn=new PreloadCart();
-          cartn.existentes=[];
-          cartn.novo = novo;
-          this.sendDataSubject.next(cartn);
-				} else {
-          let carr = JSON.parse(localStorage.getItem('Cart')) as PreloadCart;
-          carr.novo = novo;
-          this.sendDataSubject.next(carr);
-          //this.ProcessServerCart(carr);
-        }
+  public InsertCart(product: Product): void {
+    this.buffer.push(product);
+    if (this.inProcess == false)
+    {
+        this.inProcess = true;
+        this.SendToServer();
     }
-}
-
+  }
+  }

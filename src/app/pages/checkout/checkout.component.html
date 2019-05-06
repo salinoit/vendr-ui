@@ -18,83 +18,98 @@
                                           <div class="col-md-6">
                                             <div class="form-group">
                                               <input type="text" class="text_field" placeholder="Nome"
-                                              id="nome" formControlName="nome"                                     
+                                              id="nome" formControlName="nome"
                                               [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
-                                              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">                                        
+                                              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
                                                   <control-messages [control]="checkoutForm.controls.nome"></control-messages>
                                              </div>
-                                          </div>  
-                                                                                  
+                                          </div>
+
                                         </div>
 
                                           <div class="col-md-6">
                                             <div class="form-group">
                                               <input type="text" class="text_field" placeholder="Sobrenome"
-                                                  id="sobrenome" formControlName="sobrenome"                                     
+                                                  id="sobrenome" formControlName="sobrenome"
                                                   [ngClass]="{ 'is-invalid': submitted && f.sobrenome.errors }">
-                                                  <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">                                        
+                                                  <div *ngIf="submitted && f.sobrenome.errors" class="invalid-feedback">
                                                       <control-messages [control]="checkoutForm.controls.sobrenome"></control-messages>
                                                  </div>
-                                              </div> 
+                                              </div>
                                           </div>
                                       </div>
                                       <!-- end /.row -->
 
                                       <div class="form-group">
                                         <input type="text" class="text_field" placeholder="E-mail"
-                                        id="email" formControlName="email"                                     
+                                        id="email" formControlName="email"
                                         [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
-                                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">                                        
+                                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
                                             <control-messages [control]="checkoutForm.controls.email"></control-messages>
                                        </div>
-                                    </div> 
+                                    </div>
 
                                       <div class="form-group">
                                         <input type="text" class="text_field" placeholder="Telefone"
-                                        id="telefone" formControlName="telefone" mask="(00)00000-0000"                                    
+                                        id="telefone" formControlName="telefone" mask="(00)00000-0000"
                                         [ngClass]="{ 'is-invalid': submitted && f.telefone.errors }">
-                                        <div *ngIf="submitted && f.telefone.errors" class="invalid-feedback">                                        
+                                        <div *ngIf="submitted && f.telefone.errors" class="invalid-feedback">
                                             <control-messages [control]="checkoutForm.controls.telefone"></control-messages>
                                        </div>
-                                    </div> 
+                                    </div>
 
                                     <div class="form-group">
                                       <input type="text" class="text_field" placeholder="CEP"
-                                      id="cep" formControlName="cep" mask="00000-000" (change)="buscaCep($event.target.value)"                                  
+                                      id="cep" formControlName="cep" mask="00000-000" (change)="buscaCep($event.target.value)"
                                       [ngClass]="{ 'is-invalid': submitted && f.cep.errors }">
-                                      <div *ngIf="submitted && f.cep.errors" class="invalid-feedback">                                        
+                                      <div *ngIf="submitted && f.cep.errors" class="invalid-feedback">
                                           <control-messages [control]="checkoutForm.controls.cep"></control-messages>
                                      </div>
-                                  </div> 
+                                  </div>
 
                                       <div class="form-group">
                                           <!--<label for="endereco">Endereço</label>-->
                                           <div class="form-group">
                                             <input type="text" class="text_field" placeholder="Endereço"
-                                            id="endereco" formControlName="endereco"                                     
+                                            id="endereco" formControlName="endereco"
                                             [ngClass]="{ 'is-invalid': submitted && f.endereco.errors }">
-                                            <div *ngIf="submitted && f.endereco.errors" class="invalid-feedback">                                        
+                                            <div *ngIf="submitted && f.endereco.errors" class="invalid-feedback">
                                                 <control-messages [control]="checkoutForm.controls.endereco"></control-messages>
                                            </div>
-                                        </div>  
-
+                                        </div>
                                       </div>
+
+                                      <div class="form-group">
+                                        <div class="form-group">
+                                          <input type="text" class="text_field" placeholder="Número"
+                                          id="numero" formControlName="numero"
+                                          [ngClass]="{ 'is-invalid': submitted && f.numero.errors }">
+                                          <div *ngIf="submitted && f.numero.errors" class="invalid-feedback">
+                                              <control-messages [control]="checkoutForm.controls.numero"></control-messages>
+                                         </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <div class="form-group">
+                                        <input type="text" class="text_field" placeholder="Complemento"
+                                        id="complemento" formControlName="complemento"
+                                        [ngClass]="{ 'is-invalid': submitted && f.complemento.errors }">
+                                        <div *ngIf="submitted && f.complemento.errors" class="invalid-feedback">
+                                            <control-messages [control]="checkoutForm.controls.complemento"></control-messages>
+                                       </div>
+                                    </div>
+                                  </div>
 
                                       <div class="row">
                                           <div class="col-md-6">
                                               <div class="form-group">
-                                                  <!--<label for="estado">Estado
-                                                      <sup>*</sup>
-                                                  </label>-->
                                                   <div class="select-wrap select-wrap2">
-                                                      <select name="estado" id="estado" class="text_field">
-                                                          <option value="">Estado *</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
+
+                                                      <select formControlName="estado" (ngModelChange)="_estadoChange($event)">
+                                                          <option *ngFor="let c of _estados" [value]="c.id">{{c.nome}}</option>
                                                       </select>
+
                                                       <span class="lnr lnr-chevron-down"></span>
                                                   </div>
                                               </div>
@@ -105,14 +120,11 @@
                                                       <sup>*</sup>
                                                   </label>-->
                                                   <div class="select-wrap select-wrap2">
-                                                      <select name="estado" id="estado" class="text_field">
-                                                          <option value="">Cidade *</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
-                                                          <option value="">xxxxx</option>
+
+                                                    <select formControlName="cidade" >
+                                                          <option *ngFor="let c of _municipios" [value]="c.id">{{c.nome}}</option>
                                                       </select>
+
                                                       <span class="lnr lnr-chevron-down"></span>
                                                   </div>
                                               </div>
@@ -167,7 +179,7 @@
                                       </div>
                                       <img src="./assets/images/boleto.png" alt="Boleto" style="height: 32px;">
                                   </li>
-                                
+
                                   <li>
                                       <div class="custom-radio">
                                           <input type="radio" id="opt2" class="" value="credito"  checked formControlName="formapagto">
@@ -181,12 +193,12 @@
                               <div class="payment_info modules__content">
                                 <div class="form-group">
                                     <input type="text" class="text_field" placeholder="Número do Cartão"
-                                    id="cartao" formControlName="cartao"                                   
+                                    id="cartao" formControlName="cartao"
                                     [ngClass]="{ 'is-invalid': submitted && f.cartao.errors }">
-                                    <div *ngIf="submitted && f.cartao.errors" class="invalid-feedback">                                        
+                                    <div *ngIf="submitted && f.cartao.errors" class="invalid-feedback">
                                         <control-messages [control]="checkoutForm.controls.cartao"></control-messages>
                                    </div>
-                                </div> 
+                                </div>
                                   <!-- lebel for date selection -->
                                   <label for="name">Data de Validade</label>
                                   <div class="row">
@@ -248,14 +260,14 @@
                                       <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" class="text_field" placeholder="Código de Segurança (CVV)"
-                                            id="codigo_seguranca" formControlName="codigo_seguranca"                                   
+                                            id="codigo_seguranca" formControlName="codigo_seguranca"
                                             [ngClass]="{ 'is-invalid': submitted && f.codigo_seguranca.errors }">
-                                            <div *ngIf="submitted && f.codigo_seguranca.errors" class="invalid-feedback">                                        
+                                            <div *ngIf="submitted && f.codigo_seguranca.errors" class="invalid-feedback">
                                                 <control-messages [control]="checkoutForm.controls.codigo_seguranca"></control-messages>
                                            </div>
-                                        </div> 
-        
-                                          <!-- <button type="submit" class="btn btn--round btn--default">PAGAR</button> -->                                          
+                                        </div>
+
+                                          <!-- <button type="submit" class="btn btn--round btn--default">PAGAR</button> -->
                                           <button [disabled]="loading" type="submit" class="btn btn--round btn--default">PAGAR</button>
                                       </div>
                                   </div>

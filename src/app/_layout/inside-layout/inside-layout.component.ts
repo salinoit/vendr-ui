@@ -66,12 +66,38 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
-    this.currentCartSubscription = this.cartService.currentCart.subscribe(ccc => {
+    this.currentCartSubscription = this.cartService.currentCartSubject.subscribe(ccc => {
       this.currentCart = ccc;
     });
 
     this.loading = false;
 
+  }
+
+  tagVisible()
+  {
+    if (this.currentCart)
+    {
+        if (this.currentCart.items)
+        {
+              if (this.currentCart.items.length==0)
+              {
+                return false;
+              }
+              else
+              {
+                return true;
+              }
+        }
+        else
+        {
+          return false;
+        }
+    }
+    else
+    {
+      return false;
+    }
   }
 
 

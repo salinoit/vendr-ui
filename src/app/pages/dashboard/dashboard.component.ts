@@ -108,6 +108,7 @@ export class DashboardComponent implements OnInit {
   _searchInput(filterVal: any) {
     this._searchTherm.next(filterVal);
   }
+
   _idvendedor: string;
   initializeVendedor(): void { //apenas para exibir os detalhes do vendedor
     if (parseInt(this._idvendedor)>0) {
@@ -137,7 +138,6 @@ export class DashboardComponent implements OnInit {
 
        if (id) {
         this._idvendedor=id;
-        //console.log('captei:' + id);
        }
        else
        {
@@ -209,7 +209,7 @@ export class DashboardComponent implements OnInit {
   {
     if (e.state!="2") {
         e.state=1;
-        this.cartService.InsertCart({id:e.IdProdutoServico,qtd:1})
+        this.cartService.InsertCart(e);
         var v=function()
         {
           e.state=2;

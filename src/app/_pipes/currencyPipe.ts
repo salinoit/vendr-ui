@@ -9,7 +9,8 @@ registerLocaleData(ptBr)
   name: 'currencyformat'
 })
 export class CurrencyFormatPipe implements PipeTransform {
-    transform(value: number, locale: string, currency_symbol: string, number_format: string = '1.2-2'): string {
+//transform(value: number, locale: string, currency_symbol: string, number_format: string = '1.2-2'): string {
+  transform(value: any, currency: string, symbol: boolean = false, locale: string, currency_symbol: string, number_format: string): string {
         if (value) {
 
             let currencyPipe = new CurrencyPipe("pt-BR");
