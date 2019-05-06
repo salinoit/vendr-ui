@@ -204,10 +204,7 @@
                               <a class="prev page-numbers" href="javascript:void(0);" [ngClass]="{disabled:pager.currentPage === 1}" (click)="setPage(pager.currentPage - 1)">
                                   <span class="lnr lnr-arrow-left"></span>
                               </a>
-
-
                               <a (click)="setPage(page)" href="javascript:void(0);" class="page-numbers" *ngFor="let page of pager.pages" [ngClass]="{current:pager.currentPage === page}">{{page}}</a>
-
 
                               <a class="next page-numbers" href="javascript:void(0);" [ngClass]="{disabled:pager.currentPage === pager.totalPages}" (click)="setPage(pager.currentPage + 1)" >
                                   <span class="lnr lnr-arrow-right"></span>

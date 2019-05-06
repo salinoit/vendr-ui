@@ -31,7 +31,7 @@
                                         <div class="product__description">
                                             <a routerLink="/produto/{{item.produto.IdProdutoServico}}"><img [src]="sanitizePicture(item.produto.ImagemProduto)" alt="Imagem Produto"></a>
                                             <div class="short_desc">
-                                                <a >
+                                                <a routerLink="/produto/{{item.produto.IdProdutoServico}}">
                                                     <h4>{{item.produto.Descricao}}</h4>
                                                 </a>
                                                 <p class="mb-2">Nunc placerat mi id nisi inter dum mollis. Praesent phare...</p>

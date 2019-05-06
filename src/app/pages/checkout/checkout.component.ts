@@ -25,8 +25,8 @@ export class CheckoutComponent implements OnInit {
 
   _estadoChange($event)
   {
-    var id=this.checkoutForm.get('estado').value;        
-    this.cepService.getLocalidades(id.toString());        
+    var id=this.checkoutForm.get('estado').value;
+    this.cepService.getLocalidades(id.toString());
   }
   GetEstadoId(sigla: string)
   {
@@ -67,23 +67,25 @@ export class CheckoutComponent implements OnInit {
       {
         if (p) {
           try {
-            this.cep=p;            
+            this.cep=p;
             this._use_city_cep = true; //volta a ser false qando a lista de cidades voltar
             this.checkoutForm.controls['estado'].setValue(this.GetEstadoId(p.estado.toString()).toString());
-            this.checkoutForm.controls['endereco'].setValue(p.logradouro);            
+            this.checkoutForm.controls['endereco'].setValue(p.logradouro);
           }
           catch(e)
           {}
         }
       });
 
+
+
       this.cepService.ufSubject.subscribe(p=>{
-        this._estados=p;        
+        this._estados=p.sort(this.compare);
       });
 
       this.cepService.municipioSubject.subscribe(p=>{
         if (p.length>0) {
-        this._municipios=p;              
+        this._municipios=p;
         if (this._use_city_cep == true) {
           if (this.cep!=null) {
             console.log(this.cep);
@@ -98,7 +100,7 @@ export class CheckoutComponent implements OnInit {
         }
       });
 
-   
+
 
     var user = JSON.parse(localStorage.getItem('currentUser')) as User;
 
@@ -127,7 +129,21 @@ export class CheckoutComponent implements OnInit {
       this.cepService.getLocalidades('35'); //sp
 
       this.bundleService.AddScript('./assets/js/main.js');
-      
+
+  }
+
+  compare(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const genreA = a.nome.toUpperCase();
+    const genreB = b.nome.toUpperCase();
+
+    let comparison = 0;
+    if (genreA > genreB) {
+      comparison = 1;
+    } else if (genreA < genreB) {
+      comparison = -1;
+    }
+    return comparison;
   }
 
   addExtendValidation() {
@@ -178,7 +194,7 @@ export class CheckoutComponent implements OnInit {
 
 
       this.loading = true;
-      
+
       // this.userService.register(this.checkoutForm.value)
       //     .pipe(first())
       //     .subscribe(
