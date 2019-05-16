@@ -4,12 +4,11 @@
 
 export const environment = {
   production: false,
-  apiUrl:'http://localhost/api/api',
-  publicZaptPay:'v1',
-  privateZaptPay:'vendr1'
-};
+  apiUrl:'http://toshiba/business/api',
 
+}
 /*
+apiUrl:'http://192.168.2.2/business/api',
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *

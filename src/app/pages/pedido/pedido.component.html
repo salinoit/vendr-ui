@@ -1,4 +1,23 @@
-    <app-breadcumb title="Pedido"></app-breadcumb>
+
+<section class="breadcrumb-area pt-4 pb-4 pt-md-5 pb-md-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+            <div class="breadcrumb">
+              <ul>
+                  <li>
+                      <a routerLink='/dashboard'>Home</a>
+                  </li>
+                  <li>
+                      <a  class="d-block d-xs-none" href="javascript:void(0)">Pedido MP{{pedido.pedido.id_pedido}}</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+  </div>
+</section>
+
     <!--================================
         START DASHBOARD AREA
     =================================-->
@@ -15,6 +34,9 @@
                             </div>
 
                             <div class="pull-right">
+                              <a href="javascript:void(0)" (click)='Voltar()' class="btn btn--round print_btn" >
+                                <span class="fa fa-arrow-left"></span> Voltar</a>
+
                                 <a routerLink="/pedido" (click)="Print()" class="btn btn--round print_btn">
                                     <span class="fa fa-print"></span> Imprimir</a>
                                 <!--<a href="#" class="btn btn--round  print_btn">
@@ -26,40 +48,41 @@
                 </div>
                 <!-- end /.row -->
 
-                <div class="row">
+                <div class="row" *ngIf='pedido'>
                     <div class="col-md-12">
                         <div class="invoice" id="invoice">
-                            <div class="invoice__head">
+                            <div class="invoice__head" >
                                 <div class="invoice_logo">
-                                    <img src="../../../assets/images/avatar-vendedor.jpg" alt="Imagem Vendedor">
-                                    <h5 class="mt-3"><strong>Nome Vendedor</strong></h5>
-                                    <p>email@exemplo.com</p>
-                                    <p>CNPJ/CPF: 12345678900 - 11 99999-9999 - Av. Paulista, 999 - São Paulo/SP</p>
+                                    <img [src]='Sanitize(pedido.vendedor.foto)' alt="Imagem Vendedor">
+                                    <h5 class="mt-3">
+                                      <strong routerLink='/vendedor/{{N(pedido.vendedor.id_vendedor)}}' style='cursor:pointer'>{{pedido.vendedor.nome}}</strong></h5>
+                                    <p>{{pedido.vendedor.email}}</p>
+                                    <p>CNPJ/CPF:{{pedido.vendedor.cpf_cnpj}} - {{pedido.vendedor.fone}} - {{pedido.vendedor.endereco}}, {{pedido.vendedor.endereco_numero}} - {{pedido.vendedor.cidade}}/{{pedido.vendedor.estado}}</p>
                                     <hr class="d-md-none">
                                 </div>
 
                                 <div class="info float-left text-left float-md-right text-md-right">
                                     <h4>Número Pedido</h4>
-                                    <p>#MP810094</p>
+                                    <p>MP{{pedido.pedido.id_pedido}}</p>
                                 </div>
                             </div>
                             <!-- end /.invoice__head -->
 
                             <div class="invoice__meta">
                                 <div class="address">
-                                    <h5 class="bold">Nome Cliente</h5>
-                                    <p>CNPJ/CPF: 12345678900</p>
-                                    <p>email@exemplo.com</p>
-                                    <p>11 99999-9999</p>
-                                    <p>Av. Salim Farah Maluf, 777</p>
-                                    <p>São Paulo/SP - 99999-999</p>
+                                    <h5 class="bold">{{pedido.cliente.nome}}</h5>
+                                    <p>CNPJ/CPF: {{pedido.cliente.cpf_cnpj}}</p>
+                                    <p>{{pedido.cliente.email}}</p>
+                                    <p>{{pedido.cliente.fone}}</p>
+                                    <p>{{pedido.cliente.endereco}}, {{pedido.cliente.endereco_numero}}</p>
+                                    <p>{{pedido.cliente.cidade}}/{{pedido.cliente.estado}} - {{pedido.cliente.cep}}</p>
                                 </div>
 
                                 <div class="date_info">
                                     <p>
-                                        <span>Data</span>12/03/2019</p>
+                                        <span>Data</span>{{pedido.pedido.data_pedido | date:'dd/MM/yyyy'}}</p>
                                     <p class="status bold">
-                                        <span>Status</span>PAGO</p>
+                                        <span>Status</span>{{pedido.pedido.status_pedido}}</p>
                                 </div>
                             </div>
                             <!-- end /.invoice__meta -->
@@ -78,33 +101,30 @@
                                         </thead>
 
 
-                                        <tbody>
-                                            <tr>
-                                                <td data-label="Cód. Produto">#1234</td>
+                                        <tbody *ngIf='pedido'>
+                                            <tr *ngFor="let x of pedido.items">
+                                                <td data-label="Cód. Produto">{{x.id_produto_servico}}</td>
                                                 <td class="detail" data-label="Produto">
-                                                    <a href="produto.html">Nome Exemplo Produto 1</a>
+                                                    <a routerLink='/produto/{{x.id_produto_servico}}'>{{x.descricao}}</a>
                                                 </td>
-                                                <td data-label="Qtde">1</td>
-                                                <td data-label="Preço">R$1200,00</td>
-                                                <td data-label="Total">R$1200,00</td>
+                                                <td data-label="Qtde">{{x.quantidade}}</td>
+                                                <td data-label="Preço">{{x.preco_unitario_fmt}}</td>
+                                                <td data-label="Total">{{x.total_item_fmt}}</td>
                                             </tr>
-                                            <tr>
-                                                <td data-label="Cód. Produto">#4321</td>
-                                                <td class="detail" data-label="Produto">
-                                                    <a href="produto.html">Nome Exemplo Produto 2</a>
-                                                </td>
-                                                <td data-label="Qtde">1</td>
-                                                <td data-label="Preço">R$500,00</td>
-                                                <td data-label="Total">R$500,00</td>
-                                            </tr>
-                                        </tbody>
+                                      </tbody>
+                                      <tfoot>
+                                        <td></td><td></td>
+                                        <td></td>
+                                        <td style='text-align:right' class="totalCell">
+                                          <p><b>Total:</b></p>
+                                        </td>
+                                        <td class='totalCell'>
+                                          <p class="bold"><b>{{pedido.pedido.valor_pedido_fmt}}</b></p>
+                                        </td>
+                                      </tfoot>
                                     </table>
                                 </div>
 
-                                <div class="pricing_info">
-                                    <!--<p>Subtotal: R$1700,00</p>-->
-                                    <p class="bold">Total : R$1700,00</p>
-                                </div>
                             </div>
                             <!-- end /.invoice_detail -->
                         </div>

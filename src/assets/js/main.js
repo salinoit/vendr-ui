@@ -49,7 +49,7 @@
 
     // Click event to scroll to top
     var scrollTop = $('.go_top');
-    scrollTop.on('click', function () {       
+    scrollTop.on('click', function () {
         $('html, body').animate({ scrollTop: 0 }, 800);
         return false;
     });
@@ -81,7 +81,17 @@
 
     /* date picker js */
     if ($('.date_area').length) {
-      $('.dattaPikkara').datepicker();
+      $('.dattaPikkara').datepicker(
+        {
+          onSelect:function(){
+            try {
+              raiseFilter();
+            }
+            catch(e)
+            {}
+          }
+        }
+      );
     }
 
 
@@ -167,3 +177,4 @@
 
 
 
+  

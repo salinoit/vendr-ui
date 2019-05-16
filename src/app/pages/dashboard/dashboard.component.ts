@@ -78,8 +78,7 @@ export class DashboardComponent implements OnInit {
     {id:0,name:'Filtrar por...'},
     {id:1,name:'Novos Itens'},
     {id:2,name:'Mais Vendidos'},
-    {id:3,name:'Já Comprados'},
-    {id:4,name:'Favoritos'},
+    {id:3,name:'Já Comprados'}
   ]
   _filterByChange($event)
   {
@@ -114,38 +113,53 @@ export class DashboardComponent implements OnInit {
     if (parseInt(this._idvendedor)>0) {
     this.vendedorService.getById(parseInt(this._idvendedor))
     .subscribe(vend => {
+      console.log(vend);
       this._vendedor = vend;
-      //console.log(vend);
-      this._vendedorLido=true;
+      this._vendedorLido = true;
       });
     }
   }
 
   ngOnInit() {
+
     this.route.queryParams.subscribe(params => {
+
      if (params['id']) {
+
        const id = params['id'];
-       this._idvendedor=id;
+
+       this._idvendedor = id;
 
        localStorage.setItem('vendedor',id);
 
-       this.router.navigate(['/dashboard']);
+       this.cartService.Clear();
+
        this.initializeVendedor();
-     }
-     else
+
+       this.router.navigate(['/dashboard']);
+
+     } else
      {
-       var id=localStorage.getItem('vendedor');
+
+       var id = localStorage.getItem('vendedor');
 
        if (id) {
-        this._idvendedor=id;
-       }
-       else
+
+        this._idvendedor = id;
+
+       } else
        {
-         this._idvendedor="0";
+
+         this._idvendedor = "0";
+
        }
+
        this.initializeVendedor();
+
      }
+
      this.loadData();
+
     });
 
 
@@ -171,21 +185,29 @@ export class DashboardComponent implements OnInit {
       vend=parseInt(this._idvendedor);
     }
 
-    this.loading=true;
-    this.productService.getPaged(page,this.itensPerPage,this._search,vend,this.itensOrder).subscribe(prod=>{
-      this._products=prod;
-      this.loading=false;
+    this.loading = true;
+    this.productService.getPaged(page,this.itensPerPage,this._search,vend,this.itensOrder,this.filterBy).subscribe(prod=>{
+      this._products = prod;
+      this.loading = false;
       // get pager object from service
       this.pager = this.pagerService.getPager(prod.total, page , this.itensPerPage);
       // get current page of items
       this.pagedItems = prod.items;
 
+
+      for (let e of this.pagedItems)
+      {
+          e.state = '0';
+      }
+
       //adiciona no array a coluna state, para controlar a animação do botao quando adicionar
       //ao carrinho
-      this.pagedItems = this.pagedItems.map(function(ad) {
-        ad.state = "0";
-        return ad;
-      });
+
+      // this.pagedItems = this.pagedItems.map(function(ad) {
+      //   ad.state = "0";
+      //   return ad;
+      // });
+
       // // get pager object from service
       // this.pager = this.pagerService.getPager(this._products.length, page , this.itensPerPage);
       // // get current page of items

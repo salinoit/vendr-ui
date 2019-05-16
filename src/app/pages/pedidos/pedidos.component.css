@@ -1,0 +1,25 @@
+
+  #myoverlay
+  {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 9999999;
+    background-color:gray ;
+    opacity:0.5
+  }
+  .ringer
+  {
+    color: white;
+    font-size: 32px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+  }
+
+  .btnadd
+  {
+    background-color: #1c5d50 !important;
+  }

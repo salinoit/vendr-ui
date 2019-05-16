@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { Pedido, PedidoFiltro } from '@app/_models';
+import { Pedido, PedidoFiltro, PedidoView } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class PedidoService {
@@ -17,8 +17,8 @@ export class PedidoService {
         return this.http.post<Pedido[]>(`${environment.apiUrl}/pedido/filter`,f);
     }
 
-    getById(id: number) {
-        return this.http.get(`${environment.apiUrl}/pedido/${id}`);
+    getById(id: string) {
+        return this.http.get<PedidoView>(`${environment.apiUrl}/pedido/${id}`);
     }
 
     register(pedido: Pedido) {

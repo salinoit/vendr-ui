@@ -173,7 +173,7 @@
 
                       <div class="product-purchase m-0 p-3">
                           <div class="price_love d-block d-lg-inline-block">
-                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">{{produto.PrecoVenda | currencyformat:'BRL':true}}</span>
+                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">{{produto.preco_venda_fmt}}</span>
                               <p>
                           </div>
                           <a  href="javascript:void(0)" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0" (click)="AddCart(produto)" [class.btnadd]="produto.state=='2'">

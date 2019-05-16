@@ -11,7 +11,7 @@
                             <a routerLink='/dashboard'>Home</a>
                         </li>
                         <li>
-                            <a *ngIf='_vendedor' class="d-block d-sm-none" href="javascript:void(0)">{{_vendedor.nome}}</a>
+                            <a *ngIf='_vendedor' class="d-block d-sm-none" href="javascript:void(0)">Vendedor {{_vendedor.nome}}</a>
                         </li>
                     </ul>
                 </div>
@@ -31,7 +31,7 @@
 <!--================================
     START AUTHOR AREA
 =================================-->
-<section class="author-profile-area">
+<section class="author-profile-area" *ngIf='_vendedor'>
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-12">
@@ -44,14 +44,21 @@
 
                             <div class="author" *ngIf="_vendedor">
                                 <h4>{{_vendedor.nome}}</h4>
-                                <p>Desde: 11/03/2019</p>
-                                <p>570 itens</p>
+                                <p>Desde: {{_vendedor.data_registro | date:'dd/MM/yyyy' }}</p>
+                                <p *ngIf='_vendedor.total_produtos>1'>{{_vendedor.total_produtos}} itens</p>
+                                <p *ngIf='_vendedor.total_produtos==1'>1 item</p>
+                                <p *ngIf='_vendedor.total_produtos==0'>Nenhum itens</p>
                                 <hr>
-                                <p>CPF/CNPJ</p>
+                                <p>CPF/CNPJ<br>
+                                {{_vendedor.cpf_cnpj}}
+                                </p>
                                 <p><a href="mailto:{{_vendedor.email}}">{{_vendedor.email}}</a></p>
-                                <p>CEP</p>
-                                <p>Endereço, número</p>
-                                <p>Cidade/Estado</p>
+                                <p>CEP<br>
+                                {{_vendedor.cep}}
+                                </p>
+                                <p>{{_vendedor.endereco}},{{_vendedor.endereco_numero}}<br>
+                                {{_vendedor.bairro}}, {{_vendedor.cidade}} - {{_vendedor.estado}}
+                                </p>
                                 <br>
                             </div>
                             <!-- end /.author -->
@@ -78,7 +85,7 @@
                             <!-- end /.social -->
 
                             <div class="author-btn">
-                                <a href="https://api.whatsapp.com/send?phone=5511999999999&text=Dúvida sobre produto" class="btn btn--md btn--round"><span class="fa fa-whatsapp mr-2"></span> WhatsApp</a>
+                                <a href="https://api.whatsapp.com/send?phone={{_vendedor.fone}}&text=Dúvida sobre produto" class="btn btn--md btn--round"><span class="fa fa-whatsapp mr-2"></span> WhatsApp</a>
                             </div>
                             <!-- end /.author-btn -->
                         </div>
@@ -118,21 +125,7 @@
                             <h2>Sobre
                                 <span>{{_vendedor.nome}}</span>
                             </h2>
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
-                                quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo
-                                ut scelerisque the mattisleo quam aliquet congue. Nunc placerat mi id nisi interdum mollis.
-                                Prae sent pharetra, justo ut scelerisque the mattisleo quam aliquet congue.</p>
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
-                                quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra.</p>
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
-                                quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo
-                                ut scelerisque the mattisleo quam aliquet congue. Nunc placerat mi id nisi interdum mollis.
-                                Prae sent pharetra, justo ut scelerisque the mattisleo quam aliquet congue.</p>
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
-                                quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra.</p>
-                            <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the mattisleo
-                                quam aliquet congue. Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo
-                                ut scelerisque the mattisleo quam aliquet congue. Nunc placerat mi id nisi mollis.</p>
+                            <div [innerHtml]='_vendedor.html'></div>
                         </div>
                     </div>
                 </div>

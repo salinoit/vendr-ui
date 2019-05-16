@@ -1,0 +1,44 @@
+    <section class="dashboard-area">
+      <div class="dashboard_contents">
+          <div class="container">
+              <form  class="checkout_form" (ngSubmit)="onSubmit()" id="checkoutForm"  [formGroup]="checkoutForm">
+                  <div class="row">
+                      <div class="col-lg-6">
+                          <div class="information_module">
+                              <div class="toggle_title">
+                                  <h4>Informações de Pagamento</h4>
+                              </div>
+
+                              <div class="information__set">
+                                  <div class="information_wrapper form--fields">
+                                      <div class="row">
+                                          <div class="col-md-6">
+
+                                            <div class="form-group">
+                                              <input type="text" class="text_field" placeholder="Nome"
+                                              id="nome" formControlName="nome"
+                                              [ngClass]="{ 'is-invalid': submitted && f.nome.errors }">
+                                              <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+                                                  <control-messages [control]="checkoutForm.controls.nome"></control-messages>
+                                             </div>
+                                          </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                              </div>
+
+                              <button [disabled]="loading" type="submit" class="btn btn--round btn--default">PAGAR</button>
+
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </section>
+
+  <!--================================
+      END DASHBOARD AREA
+  =================================-->
+

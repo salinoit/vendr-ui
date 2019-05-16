@@ -22,6 +22,7 @@ export class PerfilComponent implements OnInit {
 
     profilePicture(vr)
     {
+
         if (vr) {
           var gh='';
           if(vr.indexOf('data:image')<0)
@@ -57,7 +58,8 @@ export class PerfilComponent implements OnInit {
         private bundleService: BundleService,
         private userService: UserService,
         private alertService: AlertService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private router: Router
 
     ) {
 
@@ -95,22 +97,29 @@ export class PerfilComponent implements OnInit {
         }
 
         this.loading = true;
+
         var user = this.currentUser;
         user.nome = this.profileForm.get('nome').value;
         user.fone = this.profileForm.get('fone').value;
         user.senha = this.profileForm.get('password').value;
+        console.log(user);
+
         if (this.userAvatar){
-          if (this.userAvatar.indexOf('../')<0) {
-            user.foto = this.userAvatar;
-          }
+          try {
+            if (this.userAvatar.indexOf('../')<0) {
+              user.foto = this.userAvatar;
+            }
+        }
+          catch (e)
+          {}
         }
 
-        this.loading = false;
+
+
         this.userService.update(user)
             .pipe(first())
             .subscribe(
                 data => {
-
                     this.updateLoginData();
                 },
                 error => {
@@ -125,17 +134,20 @@ export class PerfilComponent implements OnInit {
           .pipe(first())
           .subscribe(
               data => {
-                 if (data==null)
+                 if (data == null)
                  {
-                  this.loading=false;
+                  this.loading = false;
                  }
-                 else{
+                 else {
                   this.alertService.success('Dados atualizados com sucesso', true);
-                  this.loading=false;
+                  this.loading = false;
                  }
               },
               error => {
-                this.loading=false;
+                localStorage.clear();
+                this.authenticationService.logout();
+                this.router.navigate(['/login']);
+                this.loading = false;
               });
       }
 }

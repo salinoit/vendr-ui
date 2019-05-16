@@ -2,6 +2,7 @@
 export class User {
     id_usuario: number;
     id_perfil: number;
+    id_consumidor: number;
     email: string;
     senha: string;
     nome: string;

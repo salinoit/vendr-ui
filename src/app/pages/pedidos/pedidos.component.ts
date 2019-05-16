@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PedidoService, BundleService, PagerService } from '@app/_services/';
-import { Pedido, PedidoFiltro } from '@app/_models';
+import { AuthenticationService, PedidoService, BundleService, PagerService } from '@app/_services/';
+import { User, Pedido, PedidoFiltro } from '@app/_models';
+
 
 @Component({
   selector: 'app-pedidos',
@@ -9,11 +10,14 @@ import { Pedido, PedidoFiltro } from '@app/_models';
 })
 export class PedidosComponent implements OnInit {
   pedidos: Pedido[];
+  currentUser: User;
+  loading: boolean;
 
   constructor(
     private bundleService: BundleService,
     private pedidoService: PedidoService,
-    private pg: PagerService
+    private pg: PagerService,
+    private auth: AuthenticationService
 
   ) { }
    filtro: PedidoFiltro;
@@ -25,19 +29,43 @@ export class PedidosComponent implements OnInit {
 
    changeFilter()
    {
+      this.filtro.inicio=$('#date1').val().toString();
+      this.filtro.fim=$('#date2').val().toString();
+      var sel=$('#slestatus > option:selected').val();
+      this.filtro.status=sel as number;
       this.getPedidos();
    }
 
+
   ngOnInit() {
+    this.loading = false;
+    
+    var lastday = function(y,m){
+      return  new Date(y, m +1, 0).getDate();
+    }
 
-    this.pedidos = [];
+    var xs = new Date().toISOString().substr(0,10).split('-');
+    var ini='01/' + xs[1] + '/' + xs[0];
+    var fi= lastday(xs[0],new Date().getMonth()) + '/' + xs[1] + '/' +xs[0];
+
+
     this.filtro=new PedidoFiltro();
-
-    this.filtro.inicio='01/04/2019';
-    this.filtro.fim='31/05/2019';
+    this.filtro.inicio=ini;
+    this.filtro.fim=fi;
     this.filtro.status=0;
     this.filtro.vendedor=0;
+    this.filtro.consumidor=0;
 
+    this.auth.currentUser.subscribe(x => {
+      this.currentUser = x;
+      this.filtro.consumidor=x.id_consumidor;
+    });
+
+   
+
+
+    this.pedidos = [];
+    
     this.bundleService.AddScript('./assets/js/main.js');
 
     this.getPedidos();
@@ -45,9 +73,11 @@ export class PedidosComponent implements OnInit {
 
   getPedidos()
   {
+    this.loading = true;
     this.pedidoService.getFiltered(this.filtro).subscribe(p =>{
       this.pedidos = p;
       this.setPage(1);
+      this.loading = false;
     });
   }
   setPage(page: number){

@@ -3,6 +3,7 @@ import { VendedorService } from '@app/_services';
 import { Vendedor } from '@app/_models';
 import { ImageUtilService } from '@app/_helpers';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute }  from '@angular/router';
 
 @Component({
   selector: 'app-vendedor',
@@ -32,7 +33,8 @@ export class VendedorComponent implements OnInit {
   constructor(
     private vendedorService: VendedorService,
     private imageUtil: ImageUtilService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private route:  ActivatedRoute
   ) { }
 
   initializeVendedor(): void {
@@ -47,18 +49,29 @@ export class VendedorComponent implements OnInit {
   }
 
   ngOnInit() {
-       var id=localStorage.getItem('vendedor');
-       if (id) {
-        this._idvendedor=id;
+
+      var id = null;
+      const p : string = this.route.snapshot.paramMap.get('id');
+
+      if (p)
+      {
+        id = p;
+      } else
+      {
+        id = localStorage.getItem('vendedor');
+      }
+      if (id) {
+        this._idvendedor = id;
         this.initializeVendedor();
-       }
-       else
-       {
-         this._idvendedor="0";
-       }
+      } else
+      {
+        this._idvendedor = "0";
+      }
   }
 
   sanitizePicture(vr){
     return this.imageUtil.sanitizePicture(vr);
   }
+
+
 }

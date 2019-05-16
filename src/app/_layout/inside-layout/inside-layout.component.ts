@@ -120,7 +120,7 @@ export class InsideLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     this.currentUserSubscription.unsubscribe();
   }
 
-  ngOnInit() {
+  ngOnInit() {   
     this.bundleService.AddScript('./assets/js/main.js');
   }
 

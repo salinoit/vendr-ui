@@ -1,11 +1,14 @@
+// tslint:disable
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { first,distinctUntilChanged } from 'rxjs/operators';
 import { CepService,BundleService } from '@app/_services'
-import { ValidationService, AlertService, UserService, AuthenticationService } from '@app/_services';
+import { CartService, ValidationService, AlertService, UserService, AuthenticationService } from '@app/_services';
 import { Municipio, UnidadeFederal, Cep } from '@app/_models/cep';
-import { User } from '@app/_models/';
+import { Cart, User } from '@app/_models/';
+import { environment } from '@environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-checkout',
@@ -17,7 +20,7 @@ export class CheckoutComponent implements OnInit {
   loading = false;
   submitted = false;
   cep = null;
-
+  currentUser: User;
 
   _estados: UnidadeFederal[];
   _municipios: Municipio[];
@@ -28,6 +31,7 @@ export class CheckoutComponent implements OnInit {
     var id=this.checkoutForm.get('estado').value;
     this.cepService.getLocalidades(id.toString());
   }
+
   GetEstadoId(sigla: string)
   {
       for (let i of this._estados)
@@ -35,6 +39,7 @@ export class CheckoutComponent implements OnInit {
           if (i.sigla == sigla ) return i.id;
       }
   }
+
   GetCidadeId(cidade: any)
   {
       for (let i of this._municipios)
@@ -51,59 +56,15 @@ export class CheckoutComponent implements OnInit {
       private alertService: AlertService,
       private bundleService:BundleService,
       private cepService:CepService,
+      private http: HttpClient,
+      private cartService: CartService
   ) {
-      // // REDIRECIONAR PARA A HOME SE JA ESTIVER LOGADO
-      // if (this.authenticationService.currentUserValue) {
-      //     this.router.navigate(['/']);
-      // }
-
   }
 
   ngOnInit() {
     this._estados = [];
     this._municipios = [];
-
-    this.cepService.cepSubject.subscribe(p=>
-      {
-        if (p) {
-          try {
-            this.cep=p;
-            this._use_city_cep = true; //volta a ser false qando a lista de cidades voltar
-            this.checkoutForm.controls['estado'].setValue(this.GetEstadoId(p.estado.toString()).toString());
-            this.checkoutForm.controls['endereco'].setValue(p.logradouro);
-          }
-          catch(e)
-          {}
-        }
-      });
-
-
-
-      this.cepService.ufSubject.subscribe(p=>{
-        this._estados=p.sort(this.compare);
-      });
-
-      this.cepService.municipioSubject.subscribe(p=>{
-        if (p.length>0) {
-        this._municipios=p;
-        if (this._use_city_cep == true) {
-          if (this.cep!=null) {
-            console.log(this.cep);
-            this.checkoutForm.controls['cidade'].setValue(this.GetCidadeId(this.cep.cidade));
-            this._use_city_cep = false;
-          }
-        }
-        else
-        {
-          this.checkoutForm.controls['cidade'].setValue(p[0].id.toString());
-        }
-        }
-      });
-
-
-
-    var user = JSON.parse(localStorage.getItem('currentUser')) as User;
-
+      var user = JSON.parse(localStorage.getItem('currentUser')) as User;
       this.checkoutForm = this.formBuilder.group({
           nome: [user.nome, Validators.required],
           estado: ['35'],
@@ -122,13 +83,61 @@ export class CheckoutComponent implements OnInit {
       {
 
       });
+
       this.addExtendValidation();
+      this.Config();
 
-      this.cepService.getEstados();
-
-      this.cepService.getLocalidades('35'); //sp
 
       this.bundleService.AddScript('./assets/js/main.js');
+  }
+
+
+
+
+  Config()
+  {
+    this.authenticationService.currentUserSubject.subscribe(p=>
+      {
+          this.currentUser = p;
+      });
+    this.cepService.cepSubject.subscribe(p=>
+      {
+        if (p) {
+          try {
+            this.cep=p;
+            this._use_city_cep = true; //volta a ser false qando a lista de cidades voltar
+            this.checkoutForm.controls['estado'].setValue(this.GetEstadoId(p.estado.toString()).toString());
+            this.checkoutForm.controls['endereco'].setValue(p.logradouro);
+          }
+          catch(e)
+          {}
+        }
+      });
+      this.cepService.ufSubject.subscribe(p=>{
+        this._estados=p.sort(this.compare);
+      });
+      this.cepService.municipioSubject.subscribe(p=>{
+        if (p.length>0) {
+        this._municipios=p;
+        if (this._use_city_cep == true) {
+          if (this.cep!=null) {
+            this.checkoutForm.controls['cidade'].setValue(this.GetCidadeId(this.cep.cidade));
+            this._use_city_cep = false;
+          }
+        }
+        else
+        {
+          this.checkoutForm.controls['cidade'].setValue(p[0].id.toString());
+        }
+        }
+      });
+
+    try {
+      this.cepService.getEstados();
+      this.cepService.getLocalidades('35'); //sp
+    }
+    catch(e)
+    {}
 
   }
 
@@ -149,24 +158,17 @@ export class CheckoutComponent implements OnInit {
   addExtendValidation() {
     const formaPagto = this.checkoutForm.get('formapagto');
     const cartao = this.checkoutForm.get('cartao');
-
-
     this.checkoutForm.get('formapagto').valueChanges.pipe(distinctUntilChanged())
       .subscribe(userCategory => {
         cartao.clearValidators();
-
-
         if (userCategory == 'credito') {
           cartao.setValidators([Validators.required,ValidationService.creditCardValidator]);
         }
-
         if (userCategory == 'boleto') {
           cartao.setValidators(null);
         }
-
         formaPagto.updateValueAndValidity();
         cartao.updateValueAndValidity();
-
       });
   }
 
@@ -174,39 +176,53 @@ export class CheckoutComponent implements OnInit {
   get f() { return this.checkoutForm.controls; }
 
   onSubmit() {
-
-      console.log(JSON.stringify(this.checkoutForm.value.formapagto));
-
-      this.submitted = true;
-
       // stop here if form is invalid
+      this.submitted = true;
       if (this.checkoutForm.invalid) {
           return;
       }
 
-      console.log('qualquercoisa');
+      var id_vendedor=localStorage.getItem('vendedor');
 
-      // return this.http
-      //     .get<Municipio[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-      //     .subscribe(data => {
-      //         this.municipioSubject.next(data as Municipio[]);
-      //     });
+      if (id_vendedor) {
+        if (parseInt(id_vendedor)<=0) return;
+      }
+      else
+      {
+        return;
+      }
 
-
+      var id_consumidor = this.currentUser.id_consumidor;
       this.loading = true;
 
-      // this.userService.register(this.checkoutForm.value)
-      //     .pipe(first())
-      //     .subscribe(
-      //         data => {
-      //             this.alertService.success('Registration successful', true);
-      //             this.router.navigate(['/login']);
-      //         },
-      //         error => {
-      //             this.alertService.error(error);
-      //             this.loading = false;
-      //         });
-  }
+      var localCart = JSON.parse(localStorage.getItem('currentCart')) as Cart;
+      if (localCart)
+      {
+         this.http.post(`${environment.apiUrl}/pedido?id_consumidor=${id_consumidor}&id_vendedor=${id_vendedor}`, localCart).subscribe(
+              data => {
+                if (data==null)
+                {
+                  this.alertService.warning("Erro no servidor. Tente novamente mais tarde!");
+                  this.loading=false;
+                }
+                else{
+                  this.cartService.Clear();
+                  this.router.navigate(['/pedidos']);
+                  this.loading = false;
+                }
+            },
+            error => {
+                this.alertService.warning("Erro no servidor. Tente novamente mais tarde!");
+                this.loading = false;
+            });
+      }
+      else
+      {
+        this.alertService.warning("Nehum item no carrinho de compras !");
+        this.loading = false;
+      }
+
+    }
 
   buscaCep(c) {
     if (c) {

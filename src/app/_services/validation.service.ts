@@ -17,7 +17,6 @@ export class ValidationService {
         'minlength': `Tamanho mínimo ${validatorValue.requiredLength} caracteres`,
         'passwordMismatch': `As senhas não conferem`,
     };
-
     return config[validatorName];
 }
 

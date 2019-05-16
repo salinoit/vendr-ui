@@ -73,8 +73,13 @@
                             </div>
                             <!-- end /.information_module -->
 
+
                             <div class="dashboard_setting_btn">
-                                <button [disabled]="loading"  class="btn btn--md btn--round">SALVAR</button>
+                              <button [disabled]="loading" class="btn btn--md btn--round" [ngStyle]="{'padding-left': loading ? '0px':'' }">
+                                <div *ngIf="loading" style="position: absolute; right: 20px;bottom: 15px;" class="ld ld-hourglass ld-spin">
+                                </div>
+                                    SALVAR
+                                </button>
                             </div>
                         </div>
                         <!-- end /.col-md-12 -->

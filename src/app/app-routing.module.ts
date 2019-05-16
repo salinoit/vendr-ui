@@ -15,6 +15,7 @@ import { PerfilComponent } from './_dynamic/perfil/perfil.component';
 import { CarrinhoComponent } from './_dynamic/carrinho/carrinho.component';
 import { ProdutoComponent } from './pages/produto/produto.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { FinalizeComponent } from './pages/finalize/finalize.component';
 import { InsideLayoutComponent } from './_layout/inside-layout/inside-layout.component';
 import { AppRoutingLoaderService } from '@app/app-routing-loader.service';
 import { AuthGuard } from './_guards';
@@ -27,9 +28,10 @@ const routes: Routes = [
     component: InsideLayoutComponent,
     children: [
       { path: 'vendedor', component: VendedorComponent },
+      { path: 'vendedor/:id', component: VendedorComponent },
       { path: 'dashboard', component: DashboardComponent, data: {animation: 'FilterPage'}  },
       { path: 'pedidos', component: PedidosComponent },
-      { path: 'pedido', component: PedidoComponent },
+      { path: 'pedido/:id', component: PedidoComponent },
       { path: 'perfil', loadChildren: '@app/_dynamic/perfil/perfil.module#PerfilModule' },
       { path: 'carrinho', loadChildren: '@app/_dynamic/carrinho/carrinho.module#CarrinhoModule' },
       { path: 'produto/:id', component: ProdutoComponent },

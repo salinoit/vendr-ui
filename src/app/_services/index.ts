@@ -10,3 +10,4 @@ export * from './cep.service';
 export * from './product.service';
 export * from './vendedor.service';
 export * from './pedido.service';
+export * from './cart.service';

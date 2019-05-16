@@ -11,21 +11,13 @@
   <title>Vendr Consumidor</title>
   <!-- inject:css -->
 
-  <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
-  <link rel="stylesheet" href="./assets/css/lnr-icon.css">
-  <link rel="stylesheet" href="./assets/css/jquery-ui.css">
-  <link rel="stylesheet" href="./assets/css/owl.carousel.css">
-  <link rel="stylesheet" href="./assets/css/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="./assets/css/style.css">
-  <link rel="stylesheet" href="./assets/css/custom.css">
-  <link rel="stylesheet" href="./assets/css/loading.css">
-  <link rel="stylesheet" href="./assets/css/loading-btn.css">
-
   <!-- endinject -->
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.ico">
 
    <!-- inject:js -->
+   <div id='scripters'></div>
+
    <script src="./assets/js/vendor/jquery/jquery-1.12.3.js"></script>
    <script src="./assets/js/vendor/jquery/popper.min.js"></script>
    <script src="./assets/js/vendor/bootstrap.min.js"></script>
@@ -33,7 +25,39 @@
    <script src="./assets/js/vendor/owl.carousel.min.js"></script>
 
    <!-- endinject -->
+  <script>
 
+  function GetPath()
+  {
+    var qtd = window.location.href.split('//')[1].split('/').length-1;
+    if (qtd <2)
+    {
+      return './';
+    }
+    else
+    {
+      var t='';
+      for (x = 0; x < qtd; x++)
+      {
+        t += '../';
+      }
+      return t;
+    }
+  }
+
+  function CreateScriptTag(scriptname)
+  {
+    var doc = window.document.getElementById('scripters');
+    var s=document.createElement('script');
+    s.type='text/javascript';
+    s.src=GetPath() + scriptname;
+    console.log(s);
+    doc.appendChild(s);
+  }
+
+   // CreateScriptTag('runtime.js');
+
+  </script>
 
     <style type="text/css">
       body, html {

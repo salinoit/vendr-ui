@@ -1,27 +1,48 @@
 
-  <app-breadcumb *ngIf="product" title="{{product.Descricao}}" ></app-breadcumb>
+<section class="breadcrumb-area pt-4 pb-4 pt-md-5 pb-md-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+            <div class="breadcrumb">
+              <ul>
+                  <li>
+                      <a routerLink='/dashboard'>Home</a>
+                  </li>
+                  <li>
+                      <a  class="d-block d-xs-none" href="javascript:void(0)">{{product.Descricao}}</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+  </div>
+</section>
 
-  <!--============================================
-      START SINGLE PRODUCT DESCRIPTION AREA
-  ==============================================-->
-  <section class="single-product-desc single-product-desc2">
-    <div *ngIf="!_product" class="panel panel-default " id="myoverlay" style="background-color: gray">
+
+  <section class="single-product-desc single-product-desc2" *ngIf="!product">
+
+    <div *ngIf="loading" class="panel panel-default " id="myoverlay">
       <div class="ringer ld ld-ring ld-spin">
           </div>
     </div>
 
-      <div class="container" *ngIf="_product">
+  </section>
+  <!--============================================
+      START SINGLE PRODUCT DESCRIPTION AREA
+  ==============================================-->
+  <section class="single-product-desc single-product-desc2" *ngIf="product">
+          <div class="container" >
           <div class="row">
               <div class="col-lg-8">
                   <div class="item-preview item-preview2 mb-4 mb-lg-0">
                       <div class="prev-slide" >
 
-                          <img *ngIf="_product.ImagemProduto" [src]="sanitizePicture(_product.ImagemProduto)" alt="{{_product.Descricao}}" width="100%" >
-                          <img *ngIf="!_product.ImagemProduto" src="../../../assets/images/p2.jpg" alt="{{_product.Descricao}}"width="100%"  >
+                          <img *ngIf="product.ImagemProduto" [src]="sanitizePicture(product.ImagemProduto)" alt="{{product.Descricao}}" width="100%" >
+                          <img *ngIf="!product.ImagemProduto" src="../../../assets/images/p2.jpg" alt="{{product.Descricao}}"width="100%"  >
 
                       </div>
 
-                      <div class="item__preview-thumb">
+                      <div class="item__preview-thumb" style='display:none'>
                           <div class="item-action">
                               <div class="action-btns">
                                   <a href="#" class="btn btn--round btn--lg btn--icon">
@@ -47,11 +68,8 @@
 
                           <div class="tab-content">
                               <div class="tab-pane product-tab fade show active" id="product-details">
-                                  <h1>{{_product.IdProdutoServico}} - {{_product.Descricao}}</h1>
-                                  <p>Nunc placerat mi id nisi interdum mollis. Praesent pharetra, justo ut scelerisque the
-                                      mattis, leo quam aliquet congue placerat mi id nisi interdum mollis. Praesent pharetra,
-                                      justo ut scel erisque the mattis, leo quam aliquet congue justo ut scelerisque. Praesent
-                                      pharetra, justo ut scelerisque the mattis, leo quam aliquet congue justo ut scelerisque.</p>
+                                  <h1>{{product.IdProdutoServico}} - {{product.Descricao}}</h1>
+                                  <p>{{product.Html}}</p>
                               </div>
                               <!-- end /.tab-content -->
 
@@ -89,22 +107,26 @@
                           <div class="price" *ngIf="product">
                               <h1>
                                   <sup>R$</sup>
-                                  <span>{{(_product.PrecoVenda | currencyformat:'BRL':true).replace("R$","")}}</span>
+                                  <span>{{product.preco_venda_fmt.replace('R$','')}}</span>
                               </h1>
                           </div>
-                          <div class="purchase-button">
-                              <a href="#" class="btn btn--lg btn--round cart-btn">
+                          <div class="purchase-button" *ngIf="!PodeComprar(product.IdProdutoServico)">
+                              <a href="javascript:void(0)" class="btn btn--lg btn--round cart-btn" (click)='AddCart(product)'>
                                   <span class="lnr lnr-cart mr-2"></span> COMPRAR</a>
+                          </div>
+                          <div class="purchase-button" *ngIf="PodeComprar(product.IdProdutoServico)">
+                            <a href="javascript:void(0)" class="btn btn--lg btn--round cart-btn btnadd">
+                                <span class="lnr lnr-cart mr-2"></span>ADICIONADO</a>
                           </div>
                           <!-- end /.purchase-button -->
                       </div>
                       <!-- end /.sidebar--card -->
 
-                      <div class="sidebar-card card-pricing card--pricing2">
+                      <div class="sidebar-card card-pricing card--pricing2" style='display:none'>
                           <div class="price">
                               <h1>
                                   <sup>R$</sup>
-                                  <span>{{(_product.PrecoVenda | currencyformat:'BRL':true).replace("R$","")}}</span>
+                                  <span>{{product.preco_venda_fmt}}</span>
                               </h1>
                           </div>
                           <ul class="pricing-options">
@@ -143,9 +165,9 @@
                               <li>
                                   <p>
                                       <span class="lnr lnr-cart pcolor"></span>Total Vendido</p>
-                                  <span>426</span>
+                                  <span>{{total_vendido}}</span>
                               </li>
-                              <li>
+                              <!-- <li>
                                   <p>
                                       <span class="lnr lnr-heart pcolor"></span>Favoritos</p>
                                   <span>240</span>
@@ -154,7 +176,7 @@
                                   <p>
                                       <span class="lnr lnr-eye pcolor"></span>Visualizações</p>
                                   <span>6,589</span>
-                              </li>
+                              </li> -->
                           </ul>
                       </div>
                       <!-- end /.sidebar-card -->
@@ -175,7 +197,7 @@
   <!--============================================
       START MORE PRODUCT AREA
   ==============================================-->
-  <section class="more_product_area section--padding pt-3 pb-2">
+  <section class="more_product_area section--padding pt-3 pb-2" *ngIf="product">
       <div class="container">
           <div class="row pl-3">
               <!-- start col-md-12 -->
@@ -189,13 +211,15 @@
               <!-- end /.col-md-12 -->
 
               <!-- start .col-md-3 -->
-              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
+              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3" *ngFor='let p of relacionados'>
                   <!-- start .single-product -->
-                  <div class="product product--card mb-4">
+                  <div class="product product--card mb-4" >
                       <div class="product__thumbnail">
-                          <img src="../../../assets/images/p1.jpg" alt="Product Image">
+                          <img *ngIf="p.ImagemProduto" [src]="sanitizePicture(p.ImagemProduto)" alt="{{p.Descricao}}" width="100%" >
+                          <img *ngIf="!p.ImagemProduto" src="../../../assets/images/p2.jpg" alt="{{p.Descricao}}"width="100%"  >
+
                           <div class="prod_btn">
-                              <a routerLink="/produto/1" class="transparent btn--sm btn--round">Visualizar</a>
+                              <a href='javascript:void(0)' (click)='Reload(p.IdProdutoServico)' class="transparent btn--sm btn--round">Visualizar</a>
                           </div>
                           <!-- end /.prod_btn -->
                       </div>
@@ -203,123 +227,28 @@
 
                       <div class="product-desc">
                           <a routerLink="/produto/1" class="product_title">
-                              <h4>Jogo 6 Copos Square para Água</h4>
+                              <h4>{{p.Descricao}}</h4>
                           </a>
                       </div>
                       <!-- end /.product-desc -->
 
                       <div class="product-purchase m-0 p-3">
                           <div class="price_love d-block d-lg-inline-block">
-                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">R$ 1798,50</span>
+                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">{{p.preco_venda_fmt}}</span>
                               <p>
                           </div>
-                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
+                          <a href="javascript:void(0)" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0"
+                          (click)="AddCart(p)" [class.btnadd]="p.state=='2'">
+                          {{ p.state=="0" ? "COMPRAR":"" }}
+                          {{ p.state=="1" ? "ADICIONANDO":"" }}
+                          {{ p.state=="2" ? "ADICIONADO":"" }}
+                        </a>
                       </div>
                       <!-- end /.product-purchase -->
                   </div>
                   <!-- end /.single-product -->
               </div>
               <!-- end /.col-md-3 -->
-
-              <!-- start .col-md-3 -->
-              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
-                  <!-- start .single-product -->
-                  <div class="product product--card mb-4">
-                      <div class="product__thumbnail">
-                          <img src="../../../assets/images/p2.jpg" alt="Product Image">
-                          <div class="prod_btn">
-                              <a routerLink="/produto/1" class="transparent btn--sm btn--round">Visualizar</a>
-                          </div>
-                          <!-- end /.prod_btn -->
-                      </div>
-                      <!-- end /.product__thumbnail -->
-
-                      <div class="product-desc">
-                          <a routerLink="/produto/1" class="product_title">
-                              <h4>Filtro De Barro Para Água - 8l</h4>
-                          </a>
-                      </div>
-                      <!-- end /.product-desc -->
-
-                      <div class="product-purchase m-0 p-3">
-                          <div class="price_love d-block d-lg-inline-block">
-                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">R$ 1798,50</span>
-                              <p>
-                          </div>
-                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
-                      </div>
-                      <!-- end /.product-purchase -->
-                  </div>
-                  <!-- end /.single-product -->
-              </div>
-              <!-- end /.col-md-3 -->
-
-              <!-- start .col-md-3 -->
-              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
-                  <!-- start .single-product -->
-                  <div class="product product--card mb-4">
-                      <div class="product__thumbnail">
-                          <img src="../../../assets/images/p3.jpg" alt="Product Image">
-                          <div class="prod_btn">
-                              <a routerLink="/produto/1" class="transparent btn--sm btn--round">Visualizar</a>
-                          </div>
-                          <!-- end /.prod_btn -->
-                      </div>
-                      <!-- end /.product__thumbnail -->
-
-                      <div class="product-desc">
-                          <a routerLink="/produto/1" class="product_title">
-                              <h4>Conjunto p/ Fondue - Vermelho/11pç</h4>
-                          </a>
-                      </div>
-                      <!-- end /.product-desc -->
-
-                      <div class="product-purchase m-0 p-3">
-                          <div class="price_love d-block d-lg-inline-block">
-                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">R$ 1798,50</span>
-                              <p>
-                          </div>
-                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
-                      </div>
-                      <!-- end /.product-purchase -->
-                  </div>
-                  <!-- end /.single-product -->
-              </div>
-              <!-- end /.col-md-3 -->
-
-              <!-- start .col-md-3 -->
-              <div class="col-lg-3 col-md-4 col-6 p-0 pr-3">
-                  <!-- start .single-product -->
-                  <div class="product product--card mb-4">
-                      <div class="product__thumbnail">
-                          <img src="../../../assets/images/p4.jpg" alt="Product Image">
-                          <div class="prod_btn">
-                              <a routerLink="/produto/1" class="transparent btn--sm btn--round">Visualizar</a>
-                          </div>
-                          <!-- end /.prod_btn -->
-                      </div>
-                      <!-- end /.product__thumbnail -->
-
-                      <div class="product-desc">
-                          <a routerLink="/produto/1" class="product_title">
-                              <h4>Conjunto Panelas Antiaderentes - Cereja/7pç</h4>
-                          </a>
-                      </div>
-                      <!-- end /.product-desc -->
-
-                      <div class="product-purchase m-0 p-3">
-                          <div class="price_love d-block d-lg-inline-block">
-                              <span class="d-block d-lg-inline-block text-center m-0 mr-lg-2">R$ 1798,50</span>
-                              <p>
-                          </div>
-                          <a href="#" class="btn btn-custom btn--round d-block pull-none d-lg-inline-block pull-lg-right text-white sell mt-3 mt-lg-0">COMPRAR</a>
-                      </div>
-                      <!-- end /.product-purchase -->
-                  </div>
-                  <!-- end /.single-product -->
-              </div>
-              <!-- end /.col-md-3 -->
-
           </div>
           <!-- end /.container -->
       </div>

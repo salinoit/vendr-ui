@@ -2,7 +2,8 @@ import { Pipe, PipeTransform, NgModule } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
-registerLocaleData(ptBr)
+
+registerLocaleData(ptBr);
 
 
 @Pipe({

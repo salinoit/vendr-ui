@@ -132,11 +132,8 @@
                                       </div>
                                   </div>
                               </div>
-                              <!-- end /.information__set -->
                           </div>
-                          <!-- end /.information_module -->
                       </div>
-                      <!-- end /.col-md-6 -->
 
                       <div class="col-lg-6">
                           <!--<div class="information_module order_summary">
@@ -199,13 +196,12 @@
                                         <control-messages [control]="checkoutForm.controls.cartao"></control-messages>
                                    </div>
                                 </div>
-                                  <!-- lebel for date selection -->
                                   <label for="name">Data de Validade</label>
                                   <div class="row">
                                       <div class="col-md-6 col-sm-6">
                                           <div class="form-group">
                                               <div class="select-wrap select-wrap2">
-                                                  <select name="months" id="name">
+                                                  <select  id="name">
                                                       <option value="">Mês</option>
                                                       <option value="jan">Janeiro</option>
                                                       <option value="feb">Fevereiro</option>
@@ -222,16 +218,12 @@
                                                   </select>
                                                   <span class="lnr lnr-chevron-down"></span>
                                               </div>
-                                              <!-- end /.select-wrap -->
                                           </div>
-                                          <!-- end /.form-group -->
                                       </div>
-                                      <!-- end /.col-md-6-->
-
                                       <div class="col-md-6 col-sm-6">
                                           <div class="form-group">
                                               <div class="select-wrap select-wrap2">
-                                                  <select name="years" id="years">
+                                                  <select  id="years">
                                                       <option value="">Ano</option>
                                                       <option value="28">2030</option>
                                                       <option value="27">2029</option>
@@ -252,10 +244,7 @@
                                           </div>
                                           <!-- end /.form-group -->
                                       </div>
-                                      <!-- end /.col-md-6-->
                                   </div>
-                                  <!-- end /.row -->
-
                                   <div class="row">
                                       <div class="col-md-6">
                                         <div class="form-group">
@@ -266,25 +255,22 @@
                                                 <control-messages [control]="checkoutForm.controls.codigo_seguranca"></control-messages>
                                            </div>
                                         </div>
-
-                                          <!-- <button type="submit" class="btn btn--round btn--default">PAGAR</button> -->
-                                          <button [disabled]="loading" type="submit" class="btn btn--round btn--default">PAGAR</button>
+                                        <button [disabled]="loading" class="btn btn--md btn--round">
+                                          <div *ngIf="loading" style="position: absolute; right: 20px;bottom: 15px;" class="ld ld-hourglass ld-spin">
+                                          </div>
+                                              PAGAR
+                                          </button>
                                       </div>
                                   </div>
                               </div>
                           </div>
-                          <!-- end /.information_module-->
                       </div>
-                      <!-- end /.col-md-6 -->
                   </div>
-                  <!-- end /.row -->
               </form>
-              <!-- end /form -->
           </div>
-          <!-- end /.container -->
       </div>
-      <!-- end /.dashboard_menu_area -->
   </section>
+
   <!--================================
       END DASHBOARD AREA
   =================================-->

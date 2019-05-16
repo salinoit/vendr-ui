@@ -27,7 +27,7 @@ import { SharedModule } from '@app/shared.module';
 //OTHERS
 
 import { FooterComponent } from './footer/footer.component';
-
+import { FinalizeComponent } from '@app/pages/finalize/finalize.component';
 
 //COMPONENT PAGES
 import { PedidoComponent,
@@ -44,7 +44,7 @@ import { PedidoComponent,
   declarations: [
     BlankComponent,C404Component,DashboardComponent,
     ForgotComponent,RegisterComponent,
-    FooterComponent,LoginComponent,
+    FooterComponent,LoginComponent, FinalizeComponent,
     VendedorComponent, PedidosComponent, PedidoComponent,
     ProdutoComponent, CheckoutComponent,
     AppComponent,InsideLayoutComponent

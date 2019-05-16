@@ -1,4 +1,4 @@
-import { Injectable, APP_INITIALIZER } from '@angular/core';
+import { EventEmitter, Injectable, APP_INITIALIZER } from '@angular/core';
 import { Product } from '@app/_models/product';
 import { Cart, CartItem,  } from '@app/_models/cart';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+   //OnChange: EventEmitter<bool>=new EventEmitter();
 
    private currentCart: Cart;
 
@@ -29,10 +30,8 @@ export class CartService {
 
       this.currentCartSubject = new BehaviorSubject<Cart>(JSON.parse(localStorage.getItem('currentCart')) as Cart);
       //this.currentCart = this.currentCartSubject.asObservable();
-
       //this.currentCartSubject = new BehaviorSubject<Cart>(new Cart());
       this.currentCartSubject.subscribe(p => {
-
         if (p == null) {
           p = new Cart();
           p.total=0;
@@ -40,13 +39,13 @@ export class CartService {
         }
 
         this.currentCart = p;
-        console.log('new cart arrive');
-        console.log(p);
       });
    }
 
    SendToServer()
    {
+
+
      if (this.buffer.length > 0){
         this.inProcess =  true;
 
@@ -111,8 +110,9 @@ export class CartService {
   }
 
   public Clear(): void
-  {
-
+  {    
+    localStorage.removeItem('currentCart');
+    this.currentCartSubject.next(new Cart());    
   }
 
   public InsertCart(product: Product): void {

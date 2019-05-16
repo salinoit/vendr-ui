@@ -34,7 +34,7 @@
                                                 <a routerLink="/produto/{{item.produto.IdProdutoServico}}">
                                                     <h4>{{item.produto.Descricao}}</h4>
                                                 </a>
-                                                <p class="mb-2">Nunc placerat mi id nisi inter dum mollis. Praesent phare...</p>
+                                                <p class="mb-2">{{item.produto.Html.substr(0,100)}}</p>
                                             </div>
                                         </div>
                                         <!-- end /.product__description -->
@@ -58,7 +58,7 @@
                                     <div class="col-lg-4 col-md-3 v_middle">
                                         <div class="product__price_download">
                                             <div class="item_price v_middle">
-                                                <span>{{item.produto.PrecoVenda | currencyformat:'BRL':true}}</span>
+                                                <span>{{item.produto.preco_venda_fmt}}</span>
                                             </div>
                                             <div class="item_action v_middle">
                                                 <a href="javascript:void(0)" class="remove_from_cart" (click)="Remove(item.produto.IdProdutoServico)">

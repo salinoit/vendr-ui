@@ -74,13 +74,13 @@
                                                       </a>
 
                                                       <p>
-                                                          <small>{{item.qtd}})</small> {{ item.produto.PrecoVenda | currencyformat:'BRL':true }}
+                                                          <small>{{item.qtd}})</small> {{ item.produto.preco_venda_fmt }}
                                                       </p>
                                                   </div>
                                               </div>
                                               <div class="total" *ngIf="tagVisible()">
                                                   <p class="m-0">
-                                                      <span>Total :</span>{{currentCart.total | currencyformat:'BRL':true }}</p>
+                                                      <span>Total :</span>{{currentCart.total_fmt }}</p>
                                               </div>
 
                                               <div class="cart_action">

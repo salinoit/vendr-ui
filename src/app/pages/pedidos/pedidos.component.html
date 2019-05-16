@@ -1,4 +1,24 @@
-    <app-breadcumb title="Meus Pedidos" link="/pedidos"></app-breadcumb>
+
+<section class="breadcrumb-area pt-4 pb-4 pt-md-5 pb-md-5">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12">
+            <div class="breadcrumb">
+              <ul>
+                  <li>
+                      <a routerLink='/dashboard'>Home</a>
+                  </li>
+                  <li>
+                      <a  class="d-block d-xs-none" href="javascript:void(0)">Meus Pedidos</a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+
 
     <!--================================
         START DASHBOARD AREA
@@ -14,20 +34,24 @@
                                 <div class="date_area">
                                     <form action="#">
                                         <div class="input_with_icon">
-                                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]='filtro.inicio' class="dattaPikkara" placeholder="De">
+                                            <input type="text" id='date1' [ngModelOptions]="{standalone: true}" [(ngModel)]='filtro.inicio' class="dattaPikkara" placeholder="De" >
                                             <span class="lnr lnr-calendar-full"></span>
                                         </div>
 
                                         <div class="input_with_icon">
-                                            <input type="text" class="dattaPikkara" [ngModelOptions]="{standalone: true}" [(ngModel)]='filtro.fim' placeholder="Até" >
+                                            <input type="text" id='date2' class="dattaPikkara" [ngModelOptions]="{standalone: true}" [(ngModel)]='filtro.fim' placeholder="Até" >
                                             <span class="lnr lnr-calendar-full"></span>
                                         </div>
                                         <div class="select-wrap">
-                                            <select name="transaction_type" id="#">
-                                                <option value="all">Status</option>
-                                                <option value="sale">Pago</option>
-                                                <option value="sale">Pendente</option>
-                                                <option value="credited">Cancelado</option>
+                                            <select name="transaction_type" id="slestatus" (change)='changeFilter()'>
+                                                <option value="0">Status</option>
+                                                <option value="1">Pedido Efetuado</option>
+                                                <option value="3">Pedido Aprovado</option>
+                                                <option value="4">Pedido Faturado</option>
+                                                <option value="5">Pedido Enviado</option>
+                                                <option value="6">Pedido Entregue</option>
+                                                <option value="7">Pedido Reprovado</option>
+                                                <option value="8">Pedido Cancelado</option>
                                             </select>
                                             <span class="lnr lnr-chevron-down"></span>
                                         </div>
@@ -62,10 +86,10 @@
                                         <td data-label="Data">{{p.data_pedido | date:'dd/MM/yyyy'}}</td>
                                         <td data-label="Nº Pedido">MP{{p.id_pedido}}</td>
                                         <td class="author" data-label="Vendedor">{{p.nome_consumidor}}</td>
-                                        <td data-label="Valor">R$500,00</td>
+                                        <td data-label="Valor">{{p.valor_pedido_fmt}}</td>
                                         <td data-label="Status">{{p.status_pedido}}</td>
                                         <td class="action">
-                                            <a routerLink="/pedido">Ver</a>
+                                            <a routerLink="/pedido/{{p.id_pedido}}">Ver</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -104,3 +128,7 @@
         END DASHBOARD AREA
     =================================-->
 
+    <div *ngIf="loading" class="panel panel-default " id="myoverlay">
+        <div class="ringer ld ld-ring ld-spin">
+            </div>
+  </div>
